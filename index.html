@@ -16,7 +16,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -79,7 +79,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 12.5px;
-      min-width: 980px;
+      min-width: 1100px;
     }
 
     th {
@@ -161,7 +161,8 @@
     .unit     { font-weight: 600; font-size: 13px; }
     .building-name { font-size: 11px; color: #6B6A65; margin-top: 2px; }
     .price    { font-weight: 600; white-space: nowrap; }
-    .notes    { font-size: 11.5px; color: #5F5E5A; max-width: 230px; line-height: 1.5; }
+    .type-cell { white-space: nowrap; }
+    .notes    { font-size: 11.5px; color: #5F5E5A; min-width: 200px; line-height: 1.5; }
 
     /* Legend */
     .legend {
@@ -187,9 +188,107 @@
       border-bottom: 1px solid #E5E3DB;
     }
 
-    @media (max-width: 600px) {
+    /* ─── MOBILE: card layout ─── */
+    @media (max-width: 768px) {
       body { padding: 16px 12px 48px; }
-      header h1 { font-size: 17px; }
+      header h1 { font-size: 18px; }
+
+      .table-wrap { overflow: visible; border: none; background: transparent; border-radius: 0; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+
+      /* Section header rows */
+      tbody tr.section-header {
+        margin: 20px 0 8px;
+        padding: 0;
+        border: none;
+        background: transparent;
+      }
+      tbody tr.section-header td {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #D8D5CC;
+        padding: 0 0 5px 0;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #9B9A95;
+      }
+
+      /* Data rows become cards */
+      tbody tr:not(.section-header) {
+        background: #fff;
+        border: 1px solid #E5E3DB;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 14px;
+        overflow: hidden;
+      }
+      tbody tr:not(.section-header) td {
+        padding: 0;
+        border: none;
+      }
+      tbody tr.top5 { border-left: 3px solid #1D9E75; }
+      tbody tr.top5 > td:first-child { border-left: none; }
+
+      /* Hide rank on mobile */
+      tbody tr:not(.section-header) > td:nth-child(1) { display: none; }
+
+      /* Unit number — card title */
+      tbody tr:not(.section-header) > td:nth-child(2) { margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(2) .unit { font-size: 15px; }
+
+      /* Building — subtitle with links */
+      tbody tr:not(.section-header) > td:nth-child(3) { margin-bottom: 10px; }
+      tbody tr:not(.section-header) > td:nth-child(3) .building-name { font-size: 11.5px; }
+
+      /* Price + Type on same line */
+      tbody tr:not(.section-header) > td:nth-child(4) {
+        display: inline-block;
+        font-size: 15px;
+        font-weight: 700;
+        margin-right: 6px;
+        margin-bottom: 8px;
+      }
+      tbody tr:not(.section-header) > td:nth-child(5) {
+        display: inline-block;
+        font-size: 12px;
+        color: #6B6A65;
+        margin-bottom: 8px;
+        vertical-align: middle;
+      }
+
+      /* Badge cells — wrap inline */
+      tbody tr:not(.section-header) > td:nth-child(6),
+      tbody tr:not(.section-header) > td:nth-child(7),
+      tbody tr:not(.section-header) > td:nth-child(8),
+      tbody tr:not(.section-header) > td:nth-child(9),
+      tbody tr:not(.section-header) > td:nth-child(10) {
+        display: inline-block;
+        margin-right: 4px;
+        margin-bottom: 6px;
+        vertical-align: top;
+      }
+      /* Small label before each badge group */
+      tbody tr:not(.section-header) > td:nth-child(6)::before { content: "Parking"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(7)::before { content: "Gym"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(8)::before { content: "Pool"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(9)::before { content: "Viewed"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(10)::before { content: "Status"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+
+      /* Notes — full width at bottom */
+      tbody tr:not(.section-header) > td:nth-child(11) {
+        min-width: unset;
+        margin-top: 8px;
+        padding-top: 10px;
+        border-top: 1px solid #EEECEA !important;
+        font-size: 12px;
+        color: #5F5E5A;
+        line-height: 1.55;
+      }
+
+      .notes { min-width: unset; }
     }
   </style>
 </head>
@@ -204,12 +303,12 @@
 
   <div class="alert alert-green">
     <span>&#9733;</span>
-    <span><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The building is the main draw. A great gym, indoor + outdoor pool, sauna, steam room, and basketball court function as an extension of the apartment &mdash; meaning the unit doesn&rsquo;t have to do everything on its own. If the amenities are poor, you&rsquo;re effectively locked inside your apartment. The alternative would be a GoodLife membership (discounted through Kenan&rsquo;s girlfriend, but still an added cost) and having to leave the building every time you want a proper workout. Broadway removes that problem entirely.</span>
+    <span><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The building is the main draw. A great gym, indoor + outdoor pool, sauna, steam room, and basketball court function as an extension of the apartment - meaning the unit doesn&rsquo;t have to do everything on its own. If the amenities are poor, you&rsquo;re effectively locked inside your apartment. The alternative would be a GoodLife membership (discounted through Michael&rsquo;s girlfriend, but still an added cost) and having to leave the building every time you want a proper workout. Broadway removes that problem entirely.</span>
   </div>
 
   <div class="alert">
     <span>&#9888;</span>
-    <span><strong>110 &amp; 120 Broadway &mdash; application risk:</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed. <strong>If Broadway falls through, 39 Roehampton (E2 Condos) is the most realistic landing spot.</strong></span>
+    <span><strong>110 &amp; 120 Broadway - application risk:</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed. <strong>If Broadway falls through, 39 Roehampton (E2 Condos) is the most realistic landing spot.</strong></span>
   </div>
 
   <div class="table-wrap">
@@ -245,7 +344,7 @@
             </div>
           </td>
           <td class="price">$2,200</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -255,7 +354,7 @@
         </tr>
 
         <!-- ─── ACTIVE TOP 5 ─── -->
-        <tr class="section-header"><td colspan="11">Top 5 &mdash; Single Key priority</td></tr>
+        <tr class="section-header"><td colspan="11">Top 5 - Single Key priority</td></tr>
 
         <tr class="top5">
           <td><span class="rank active">2</span></td>
@@ -268,12 +367,12 @@
             </div>
           </td>
           <td class="price">$2,249</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td><span class="badge b-amber">Offer - no viewing</span></td>
           <td class="notes">Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.</td>
         </tr>
 
@@ -288,12 +387,12 @@
             </div>
           </td>
           <td class="price">$2,200</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td><span class="badge b-amber">Offer - no viewing</span></td>
           <td class="notes">Same layout as 1010. Colour scheme unknown. Landlord went silent on Kenan.</td>
         </tr>
 
@@ -308,7 +407,7 @@
             </div>
           </td>
           <td class="price">$2,100</td>
-          <td>1 bed + den, 1 bath</td>
+          <td class="type-cell">1 bed + den, 1 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -328,13 +427,13 @@
             </div>
           </td>
           <td class="price">$2,100</td>
-          <td>1 bed + den, 1 bath</td>
+          <td class="type-cell">1 bed + den, 1 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Massive den on right as you enter &mdash; open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.</td>
+          <td class="notes">Massive den on right as you enter - open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.</td>
         </tr>
 
         <!-- ─── UNDER CONSIDERATION ─── -->
@@ -351,7 +450,7 @@
             </div>
           </td>
           <td class="price">$2,950</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -371,7 +470,7 @@
             </div>
           </td>
           <td class="price">$2,575</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -391,7 +490,7 @@
             </div>
           </td>
           <td class="price">$2,850</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -411,7 +510,7 @@
             </div>
           </td>
           <td class="price">$2,950</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -431,12 +530,12 @@
             </div>
           </td>
           <td class="price">$3,000</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
           <td><span class="badge b-green">Yes</span></td>
           <td><span class="badge b-amber">Outdoor only</span></td>
           <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td><span class="badge b-amber">Offer - no viewing</span></td>
           <td class="notes">741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.</td>
         </tr>
 
@@ -451,12 +550,12 @@
             </div>
           </td>
           <td class="price">$2,850</td>
-          <td>2 bed, 2 bath</td>
+          <td class="type-cell">2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
           <td><span class="badge b-green">Yes</span></td>
           <td><span class="badge b-amber">Outdoor only</span></td>
           <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td><span class="badge b-amber">Offer - no viewing</span></td>
           <td class="notes">756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.</td>
         </tr>
 
@@ -474,13 +573,13 @@
             </div>
           </td>
           <td class="price">$2,250</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
           <td><span class="badge b-blue">Extensive</span></td>
           <td><span class="badge b-gray">Unconfirmed</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-blue">Primary fallback</span></td>
-          <td class="notes">Most likely choice if Broadway falls through. Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines &mdash; best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). Pool listed but no photos found &mdash; unconfirmed. Low counter space &mdash; island needed.</td>
+          <td class="notes">Most likely choice if Broadway falls through. Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines - best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). Pool listed but no photos found - unconfirmed. Low counter space - island needed.</td>
         </tr>
 
         <tr>
@@ -494,7 +593,7 @@
             </div>
           </td>
           <td class="price">$2,100</td>
-          <td>1 bed, 1 bath</td>
+          <td class="type-cell">1 bed, 1 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
           <td><span class="badge b-amber">Subpar</span></td>
           <td><span class="badge b-red">No pool</span></td>
@@ -504,10 +603,10 @@
         </tr>
 
         <!-- ─── NO OFFER ─── -->
-        <tr class="section-header"><td colspan="11">Viewed &mdash; no offer</td></tr>
+        <tr class="section-header"><td colspan="11">Viewed - no offer</td></tr>
 
         <tr class="no-offer">
-          <td><span class="rank">&mdash;</span></td>
+          <td><span class="rank">-</span></td>
           <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">1814</a></div></td>
           <td>
             <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
@@ -517,17 +616,17 @@
             </div>
           </td>
           <td class="price">$2,150</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">Tiny living room &mdash; sofa collides with balcony door. Poor space utilisation.</td>
+          <td class="notes">Tiny living room - sofa collides with balcony door. Poor space utilisation.</td>
         </tr>
 
         <tr class="no-offer">
-          <td><span class="rank">&mdash;</span></td>
+          <td><span class="rank">-</span></td>
           <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">712</a></div></td>
           <td>
             <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
@@ -537,7 +636,7 @@
             </div>
           </td>
           <td class="price">$2,300</td>
-          <td>1 bed + den, 2 bath</td>
+          <td class="type-cell">1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
           <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
@@ -547,7 +646,7 @@
         </tr>
 
         <tr class="no-offer">
-          <td><span class="rank">&mdash;</span></td>
+          <td><span class="rank">-</span></td>
           <td><div class="unit"><a href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">3404</a></div></td>
           <td>
             <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
@@ -556,8 +655,8 @@
               <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
             </div>
           </td>
-          <td class="price">&mdash;</td>
-          <td>1 bed + den, 1 bath</td>
+          <td class="price">-</td>
+          <td class="type-cell">1 bed + den, 1 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
           <td><span class="badge b-green">Yes</span></td>
           <td><span class="badge b-amber">Outdoor only</span></td>
@@ -573,7 +672,7 @@
   <div class="legend">
     <div class="leg-item">
       <div class="leg-swatch" style="background:#E1F5EE; border-left: 3px solid #1D9E75;"></div>
-      Top 5 &mdash; Single Key priority
+      Top 5 - Single Key priority
     </div>
     <div class="leg-item">
       <div class="leg-swatch" style="background:#F1EFE8; opacity:0.5;"></div>
