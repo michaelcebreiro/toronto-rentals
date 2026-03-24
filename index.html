@@ -16,7 +16,7 @@
     }
 
     .container {
-      max-width: 1160px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -79,7 +79,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 12.5px;
-      min-width: 960px;
+      min-width: 980px;
     }
 
     th {
@@ -128,6 +128,21 @@
     .b-blue   { background: #E6F1FB; color: #185FA5; }
     .b-purple { background: #EEEDFE; color: #534AB7; }
 
+    /* Links */
+    a { color: inherit; text-decoration: underline; text-decoration-color: rgba(0,0,0,0.2); }
+    a:hover { text-decoration-color: currentColor; }
+    .building-links { margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .ext-link {
+      font-size: 10px;
+      color: #185FA5;
+      text-decoration: none;
+      background: #E6F1FB;
+      padding: 1px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .ext-link:hover { background: #cce3f7; text-decoration: none; }
+
     /* Cell content */
     .rank {
       font-size: 11px;
@@ -144,7 +159,7 @@
     .rank.active { background: #E1F5EE; color: #0F6E56; }
 
     .unit     { font-weight: 600; font-size: 13px; }
-    .building { font-size: 11px; color: #6B6A65; margin-top: 2px; }
+    .building-name { font-size: 11px; color: #6B6A65; margin-top: 2px; }
     .price    { font-weight: 600; white-space: nowrap; }
     .notes    { font-size: 11.5px; color: #5F5E5A; max-width: 230px; line-height: 1.5; }
 
@@ -158,11 +173,7 @@
       color: #6B6A65;
     }
     .leg-item { display: flex; align-items: center; gap: 6px; }
-    .leg-swatch {
-      width: 12px;
-      height: 12px;
-      border-radius: 2px;
-    }
+    .leg-swatch { width: 12px; height: 12px; border-radius: 2px; }
 
     /* Section dividers */
     tr.section-header td {
@@ -193,12 +204,12 @@
 
   <div class="alert alert-green">
     <span>&#9733;</span>
-    <span><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The building is the main draw. A great gym, indoor + outdoor pool, sauna, and basketball court function as an extension of the apartment &mdash; meaning the unit doesn&rsquo;t have to do everything on its own. If the amenities are poor, you&rsquo;re effectively locked inside your apartment. The alternative would be a GoodLife membership (discounted through Kenan&rsquo;s girlfriend, but still an added cost) and having to leave the building every time you want a proper workout. Broadway removes that problem entirely.</span>
+    <span><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The building is the main draw. A great gym, indoor + outdoor pool, sauna, steam room, and basketball court function as an extension of the apartment &mdash; meaning the unit doesn&rsquo;t have to do everything on its own. If the amenities are poor, you&rsquo;re effectively locked inside your apartment. The alternative would be a GoodLife membership (discounted through Kenan&rsquo;s girlfriend, but still an added cost) and having to leave the building every time you want a proper workout. Broadway removes that problem entirely.</span>
   </div>
 
   <div class="alert">
     <span>&#9888;</span>
-    <span><strong>110 &amp; 120 Broadway &mdash; application risk:</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed.</span>
+    <span><strong>110 &amp; 120 Broadway &mdash; application risk:</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed. <strong>If Broadway falls through, 39 Roehampton (E2 Condos) is the most realistic landing spot.</strong></span>
   </div>
 
   <div class="table-wrap">
@@ -225,8 +236,14 @@
 
         <tr class="lost">
           <td><span class="rank">1</span></td>
-          <td><div class="unit">1010 S</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">1010 S</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,200</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -242,8 +259,14 @@
 
         <tr class="top5">
           <td><span class="rank active">2</span></td>
-          <td><div class="unit">2710 S</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://www.realtor.ca/real-estate/29460585/2710-s-110-broadway-avenue-toronto-mount-pleasant-west-mount-pleasant-west" target="_blank" rel="noopener">2710 S</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,249</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -256,8 +279,14 @@
 
         <tr class="top5">
           <td><span class="rank active">3</span></td>
-          <td><div class="unit">2210</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">2210</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,200</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -270,8 +299,14 @@
 
         <tr class="top5">
           <td><span class="rank active">4</span></td>
-          <td><div class="unit">3111</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">3111</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,100</td>
           <td>1 bed + den, 1 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -284,8 +319,14 @@
 
         <tr class="top5">
           <td><span class="rank active">5</span></td>
-          <td><div class="unit">3103</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">3103</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,100</td>
           <td>1 bed + den, 1 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -301,8 +342,14 @@
 
         <tr>
           <td><span class="rank">6</span></td>
-          <td><div class="unit">1912</div><div class="building">110 Broadway (Untitled North)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">1912</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,950</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
@@ -315,8 +362,14 @@
 
         <tr>
           <td><span class="rank">7</span></td>
-          <td><div class="unit">2414</div><div class="building">120 Broadway</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">2414</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,575</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-red">No</span></td>
@@ -329,8 +382,14 @@
 
         <tr>
           <td><span class="rank">8</span></td>
-          <td><div class="unit">1805</div><div class="building">120 Broadway</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">1805</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,850</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
@@ -343,8 +402,14 @@
 
         <tr>
           <td><span class="rank">9</span></td>
-          <td><div class="unit">1105</div><div class="building">120 Broadway</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://condos.ca/toronto/untitled-toronto-110-broadway-ave-120-broadway-ave/unit-1105-C12830738" target="_blank" rel="noopener">1105</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,950</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
@@ -357,8 +422,14 @@
 
         <tr>
           <td><span class="rank">10</span></td>
-          <td><div class="unit">2211</div><div class="building">117 Broadway (Line 5 South)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">2211</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$3,000</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
@@ -371,8 +442,14 @@
 
         <tr>
           <td><span class="rank">11</span></td>
-          <td><div class="unit">810N</div><div class="building">117 Broadway (Line 5 South)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://condos.ca/toronto/line-5-condos-117-127-broadway-ave/unit-810N-C12811576" target="_blank" rel="noopener">810N</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,850</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
@@ -388,22 +465,34 @@
 
         <tr>
           <td><span class="rank">12</span></td>
-          <td><div class="unit">602</div><div class="building">39 Roehampton (E2 Condos)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/39-roehampton-e2-condos" target="_blank" rel="noopener">602</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://e2condos.ca/" target="_blank" rel="noopener">39 Roehampton (E2 Condos)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://e2condos.ca/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/39-roehampton-e2-condos" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,250</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
           <td><span class="badge b-blue">Extensive</span></td>
           <td><span class="badge b-gray">Unconfirmed</span></td>
           <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-purple">Fallback offer</span></td>
-          <td class="notes">Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines &mdash; best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). Pool listed but no photos found &mdash; unconfirmed. Low counter space &mdash; island needed.</td>
+          <td><span class="badge b-blue">Primary fallback</span></td>
+          <td class="notes">Most likely choice if Broadway falls through. Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines &mdash; best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). Pool listed but no photos found &mdash; unconfirmed. Low counter space &mdash; island needed.</td>
         </tr>
 
         <tr>
           <td><span class="rank">13</span></td>
-          <td><div class="unit">1805</div><div class="building">2161 Yonge / 20 Soudan (Y&amp;S Condos)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos" target="_blank" rel="noopener">1805</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">2161 Yonge / 20 Soudan (Y&amp;S Condos)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,100</td>
           <td>1 bed, 1 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
@@ -419,8 +508,14 @@
 
         <tr class="no-offer">
           <td><span class="rank">&mdash;</span></td>
-          <td><div class="unit">1814</div><div class="building">120 Broadway</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">1814</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,150</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -433,8 +528,14 @@
 
         <tr class="no-offer">
           <td><span class="rank">&mdash;</span></td>
-          <td><div class="unit">712</div><div class="building">120 Broadway</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">712</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">$2,300</td>
           <td>1 bed + den, 2 bath</td>
           <td><span class="badge b-amber">Rentable separately</span></td>
@@ -447,8 +548,14 @@
 
         <tr class="no-offer">
           <td><span class="rank">&mdash;</span></td>
-          <td><div class="unit">3404</div><div class="building">117 Broadway (Line 5 South)</div></td>
-          <td></td>
+          <td><div class="unit"><a href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">3404</a></div></td>
+          <td>
+            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
+            <div class="building-links">
+              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
+              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
+            </div>
+          </td>
           <td class="price">&mdash;</td>
           <td>1 bed + den, 1 bath</td>
           <td><span class="badge b-gray">Unknown</span></td>
