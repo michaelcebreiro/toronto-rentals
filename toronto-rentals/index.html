@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toronto Rental Shortlist</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #F9F8F5;
+      color: #1A1916;
+      padding: 32px 24px 64px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1A1916;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: #6B6A65;
+    }
+
+    .updated {
+      font-size: 11.5px;
+      color: #9B9A95;
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid #E5E3DB;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      min-width: 960px;
+    }
+
+    th {
+      background: #F5F4F0;
+      color: #6B6A65;
+      font-weight: 500;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #E5E3DB;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #EEECEA;
+      vertical-align: top;
+      color: #1A1916;
+      line-height: 1.45;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* Row states */
+    tr.top5 td:first-child { border-left: 3px solid #1D9E75; }
+    tr.top5 td { background: #FDFFFE; }
+
+    tr.lost td { opacity: 0.45; }
+    tr.no-offer td { opacity: 0.4; }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .b-green  { background: #E1F5EE; color: #0F6E56; }
+    .b-red    { background: #FCEBEB; color: #A32D2D; }
+    .b-amber  { background: #FAEEDA; color: #854F0B; }
+    .b-gray   { background: #F1EFE8; color: #5F5E5A; }
+    .b-blue   { background: #E6F1FB; color: #185FA5; }
+    .b-purple { background: #EEEDFE; color: #534AB7; }
+
+    /* Cell content */
+    .rank {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6B6A65;
+      background: #F1EFE8;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rank.active { background: #E1F5EE; color: #0F6E56; }
+
+    .unit     { font-weight: 600; font-size: 13px; }
+    .building { font-size: 11px; color: #6B6A65; margin-top: 2px; }
+    .price    { font-weight: 600; white-space: nowrap; }
+    .notes    { font-size: 11.5px; color: #5F5E5A; max-width: 230px; line-height: 1.5; }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      font-size: 11.5px;
+      color: #6B6A65;
+    }
+    .leg-item { display: flex; align-items: center; gap: 6px; }
+    .leg-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* Section dividers */
+    tr.section-header td {
+      background: #F5F4F0;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9B9A95;
+      padding: 6px 12px;
+      border-bottom: 1px solid #E5E3DB;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 16px 12px 48px; }
+      header h1 { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Toronto Rental Shortlist</h1>
+    <p>All listings &middot; Priority order &middot; Top 5 for Single Key highlighted in green</p>
+    <p class="updated">Last updated: <span id="lastUpdated">March 2025</span></p>
+  </header>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Unit</th>
+          <th>Building</th>
+          <th>Price / mo</th>
+          <th>Type</th>
+          <th>Parking</th>
+          <th>Gym</th>
+          <th>Pool</th>
+          <th>Viewed</th>
+          <th>Offer status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ─── LOST ─── -->
+        <tr class="section-header"><td colspan="11">Lost</td></tr>
+
+        <tr class="lost">
+          <td><span class="rank">1</span></td>
+          <td><div class="unit">1010 S</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,200</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-red">Lost</span></td>
+          <td class="notes">Light colour scheme. The ideal unit. Lost to another applicant.</td>
+        </tr>
+
+        <!-- ─── ACTIVE TOP 5 ─── -->
+        <tr class="section-header"><td colspan="11">Top 5 &mdash; Single Key priority</td></tr>
+
+        <tr class="top5">
+          <td><span class="rank active">2</span></td>
+          <td><div class="unit">2710 S</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,249</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td class="notes">Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.</td>
+        </tr>
+
+        <tr class="top5">
+          <td><span class="rank active">3</span></td>
+          <td><div class="unit">2210</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,200</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td class="notes">Same layout as 1010. Colour scheme unknown. Landlord went silent on Kenan.</td>
+        </tr>
+
+        <tr class="top5">
+          <td><span class="rank active">4</span></td>
+          <td><div class="unit">3111</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,100</td>
+          <td>1 bed + den, 1 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-gray">Possibly</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Very high floor. Glass door separates den from kitchen. West-facing unobstructed balcony. Good value.</td>
+        </tr>
+
+        <tr class="top5">
+          <td><span class="rank active">5</span></td>
+          <td><div class="unit">3103</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,100</td>
+          <td>1 bed + den, 1 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Massive den on right as you enter &mdash; open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.</td>
+        </tr>
+
+        <!-- ─── UNDER CONSIDERATION ─── -->
+        <tr class="section-header"><td colspan="11">Under consideration</td></tr>
+
+        <tr>
+          <td><span class="rank">6</span></td>
+          <td><div class="unit">1912</div><div class="building">110 Broadway (Untitled North)</div></td>
+          <td></td>
+          <td class="price">$2,950</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-green">Yes (incl.)</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Corner suite, two balconies, SE facing. Parking included. Higher price point.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">7</span></td>
+          <td><div class="unit">2414</div><div class="building">120 Broadway</div></td>
+          <td></td>
+          <td class="price">$2,575</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Good price for 2 bed. Corner den may serve as second room per listing. No parking.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">8</span></td>
+          <td><div class="unit">1805</div><div class="building">120 Broadway</div></td>
+          <td></td>
+          <td class="price">$2,850</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-green">Yes (incl.)</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Two balconies, south-facing, lots of light. Parking + locker included. Higher floor than 1105.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">9</span></td>
+          <td><div class="unit">1105</div><div class="building">120 Broadway</div></td>
+          <td></td>
+          <td class="price">$2,950</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-green">Yes (incl.)</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer</span></td>
+          <td class="notes">Large 817 sqft with two balconies. Big windows. Parking + locker included. Ideally want 1-bed + den first.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">10</span></td>
+          <td><div class="unit">2211</div><div class="building">117 Broadway (Line 5 South)</div></td>
+          <td></td>
+          <td class="price">$3,000</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-green">Yes (incl.)</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-amber">Outdoor only</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td class="notes">741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">11</span></td>
+          <td><div class="unit">810N</div><div class="building">117 Broadway (Line 5 South)</div></td>
+          <td></td>
+          <td class="price">$2,850</td>
+          <td>2 bed, 2 bath</td>
+          <td><span class="badge b-green">Yes (incl.)</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-amber">Outdoor only</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
+          <td class="notes">756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.</td>
+        </tr>
+
+        <!-- ─── FALLBACKS ─── -->
+        <tr class="section-header"><td colspan="11">Fallbacks</td></tr>
+
+        <tr>
+          <td><span class="rank">12</span></td>
+          <td><div class="unit">602</div><div class="building">39 Roehampton (E2 Condos)</div></td>
+          <td></td>
+          <td class="price">&mdash;</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-gray">Unknown</span></td>
+          <td><span class="badge b-blue">Extensive</span></td>
+          <td><span class="badge b-red">No pool</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-purple">Fallback offer</span></td>
+          <td class="notes">Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines. Low counter space &mdash; island needed. No pool; gym membership still required.</td>
+        </tr>
+
+        <tr>
+          <td><span class="rank">13</span></td>
+          <td><div class="unit">1805</div><div class="building">2161 Yonge / 20 Soudan (Y&amp;S Condos)</div></td>
+          <td></td>
+          <td class="price">$2,100</td>
+          <td>1 bed, 1 bath</td>
+          <td><span class="badge b-gray">Unknown</span></td>
+          <td><span class="badge b-amber">Subpar</span></td>
+          <td><span class="badge b-red">No pool</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-purple">Desperate fallback only</span></td>
+          <td class="notes">Great price. Marble aesthetic, under construction. Good kitchen counter space. Weird living room nook. Gym worse than E2. No pool. Last resort only.</td>
+        </tr>
+
+        <!-- ─── NO OFFER ─── -->
+        <tr class="section-header"><td colspan="11">Viewed &mdash; no offer</td></tr>
+
+        <tr class="no-offer">
+          <td><span class="rank">&mdash;</span></td>
+          <td><div class="unit">1814</div><div class="building">120 Broadway</div></td>
+          <td></td>
+          <td class="price">$2,150</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-red">No offer</span></td>
+          <td class="notes">Tiny living room &mdash; sofa collides with balcony door. Poor space utilisation.</td>
+        </tr>
+
+        <tr class="no-offer">
+          <td><span class="rank">&mdash;</span></td>
+          <td><div class="unit">712</div><div class="building">120 Broadway</div></td>
+          <td></td>
+          <td class="price">$2,300</td>
+          <td>1 bed + den, 2 bath</td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes</span></td>
+          <td><span class="badge b-red">No offer</span></td>
+          <td class="notes">No room for sofa without facing a wall. Small kitchen. Minimal den space.</td>
+        </tr>
+
+        <tr class="no-offer">
+          <td><span class="rank">&mdash;</span></td>
+          <td><div class="unit">3404</div><div class="building">117 Broadway (Line 5 South)</div></td>
+          <td></td>
+          <td class="price">&mdash;</td>
+          <td>1 bed + den, 1 bath</td>
+          <td><span class="badge b-gray">Unknown</span></td>
+          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-amber">Outdoor only</span></td>
+          <td><span class="badge b-red">No</span></td>
+          <td><span class="badge b-red">No offer</span></td>
+          <td class="notes">Den is in the corner near the door. Depressing, would not fit desk or office setup.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#E1F5EE; border-left: 3px solid #1D9E75;"></div>
+      Top 5 &mdash; Single Key priority
+    </div>
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#F1EFE8; opacity:0.5;"></div>
+      Lost / no offer (dimmed)
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
