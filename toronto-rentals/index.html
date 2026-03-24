@@ -21,7 +21,7 @@
     }
 
     header {
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
     header h1 {
@@ -41,6 +41,24 @@
       color: #9B9A95;
       margin-top: 4px;
     }
+
+    /* Alert callout */
+    .alert {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #FAEEDA;
+      border: 1px solid #F0D9B0;
+      border-left: 3px solid #C97B20;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      font-size: 12.5px;
+      color: #5A3A0A;
+      line-height: 1.5;
+    }
+
+    .alert strong { font-weight: 600; }
 
     .table-wrap {
       overflow-x: auto;
@@ -165,6 +183,11 @@
     <p class="updated">Last updated: <span id="lastUpdated">March 2025</span></p>
   </header>
 
+  <div class="alert">
+    <span>&#9888;</span>
+    <span><strong>110 &amp; 120 Broadway (Untitled North):</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed.</span>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -193,9 +216,9 @@
           <td></td>
           <td class="price">$2,200</td>
           <td>1 bed + den, 2 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-red">Lost</span></td>
           <td class="notes">Light colour scheme. The ideal unit. Lost to another applicant.</td>
@@ -210,9 +233,9 @@
           <td></td>
           <td class="price">$2,249</td>
           <td>1 bed + den, 2 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
           <td class="notes">Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.</td>
@@ -224,9 +247,9 @@
           <td></td>
           <td class="price">$2,200</td>
           <td>1 bed + den, 2 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer &mdash; no viewing</span></td>
           <td class="notes">Same layout as 1010. Colour scheme unknown. Landlord went silent on Kenan.</td>
@@ -238,9 +261,9 @@
           <td></td>
           <td class="price">$2,100</td>
           <td>1 bed + den, 1 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-gray">Possibly</span></td>
           <td><span class="badge b-amber">Offer</span></td>
           <td class="notes">Very high floor. Glass door separates den from kitchen. West-facing unobstructed balcony. Good value.</td>
@@ -252,9 +275,9 @@
           <td></td>
           <td class="price">$2,100</td>
           <td>1 bed + den, 1 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-amber">Offer</span></td>
           <td class="notes">Massive den on right as you enter &mdash; open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.</td>
@@ -270,8 +293,8 @@
           <td class="price">$2,950</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer</span></td>
           <td class="notes">Corner suite, two balconies, SE facing. Parking included. Higher price point.</td>
@@ -284,8 +307,8 @@
           <td class="price">$2,575</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer</span></td>
           <td class="notes">Good price for 2 bed. Corner den may serve as second room per listing. No parking.</td>
@@ -298,7 +321,7 @@
           <td class="price">$2,850</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer</span></td>
@@ -312,7 +335,7 @@
           <td class="price">$2,950</td>
           <td>2 bed, 2 bath</td>
           <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-green">Yes</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
           <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-red">No</span></td>
           <td><span class="badge b-amber">Offer</span></td>
@@ -387,9 +410,9 @@
           <td></td>
           <td class="price">$2,150</td>
           <td>1 bed + den, 2 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-red">No offer</span></td>
           <td class="notes">Tiny living room &mdash; sofa collides with balcony door. Poor space utilisation.</td>
@@ -401,9 +424,9 @@
           <td></td>
           <td class="price">$2,300</td>
           <td>1 bed + den, 2 bath</td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-green">Yes (indoor)</span></td>
+          <td><span class="badge b-amber">Rentable separately</span></td>
+          <td><span class="badge b-blue">Yes (extensive)</span></td>
+          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
           <td><span class="badge b-blue">Yes</span></td>
           <td><span class="badge b-red">No offer</span></td>
           <td class="notes">No room for sofa without facing a wall. Small kitchen. Minimal den space.</td>
