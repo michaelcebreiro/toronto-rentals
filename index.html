@@ -1,1478 +1,927 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toronto Rental Shortlist</title>
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toronto Rental Shortlist</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #F9F8F5;
+      color: #1A1916;
+      padding: 32px 24px 64px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1A1916;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: #6B6A65;
+    }
+
+    .updated {
+      font-size: 11.5px;
+      color: #9B9A95;
+      margin-top: 4px;
+    }
+
+    /* Alert callouts */
+    .alert {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #FAEEDA;
+      border: 1px solid #F0D9B0;
+      border-left: 3px solid #C97B20;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-size: 12.5px;
+      color: #5A3A0A;
+      line-height: 1.5;
+    }
+
+    .alert.alert-green {
+      background: #E8F8F2;
+      border-color: #B6E6D4;
+      border-left-color: #1D9E75;
+      color: #0A4535;
+      margin-bottom: 10px;
+    }
+
+    .alert strong { font-weight: 600; }
+
+    /* Score formula collapsible */
+    .formula-box {
+      margin-bottom: 12px;
+    }
+
+    .formula-box summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #6B6A65;
+      cursor: pointer;
+      user-select: none;
+      padding: 4px 0;
+    }
+
+    .formula-box summary::-webkit-details-marker { display: none; }
+    .formula-box summary::before { content: "▸"; font-size: 10px; transition: transform 0.15s; }
+    .formula-box[open] summary::before { transform: rotate(90deg); }
+
+    .formula-inner {
+      margin-top: 8px;
+      background: #F5F4F0;
+      border: 1px solid #E5E3DB;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 11.5px;
+      color: #3A3935;
+      line-height: 1.7;
+    }
+
+    .formula-inner table {
+      min-width: unset;
+      width: auto;
+      font-size: 11.5px;
+      border-collapse: collapse;
+      margin-top: 6px;
+    }
+
+    .formula-inner td, .formula-inner th {
+      padding: 3px 10px 3px 0;
+      border-bottom: none;
+      vertical-align: top;
+      color: #3A3935;
+      background: transparent;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 11.5px;
+      font-weight: 400;
+    }
+
+    .formula-inner th {
+      font-weight: 600;
+      color: #6B6A65;
+    }
+
+    .formula-total {
+      margin-top: 8px;
+      font-weight: 600;
+      color: #1A1916;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid #E5E3DB;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      min-width: 1100px;
+    }
+
+    th {
+      background: #F5F4F0;
+      color: #6B6A65;
+      font-weight: 500;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #E5E3DB;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #EEECEA;
+      vertical-align: top;
+      color: #1A1916;
+      line-height: 1.45;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* Row states */
+    tr.top5 td:first-child { border-left: 3px solid #1D9E75; }
+    tr.top5 td { background: #FDFFFE; }
+
+    tr.lost td { opacity: 0.45; }
+    tr.no-offer td { opacity: 0.4; }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .b-green  { background: #E1F5EE; color: #0F6E56; }
+    .b-red    { background: #FCEBEB; color: #A32D2D; }
+    .b-amber  { background: #FAEEDA; color: #854F0B; }
+    .b-gray   { background: #F1EFE8; color: #5F5E5A; }
+    .b-blue   { background: #E6F1FB; color: #185FA5; }
+    .b-purple { background: #EEEDFE; color: #534AB7; }
+
+    /* Links */
+    a { color: inherit; text-decoration: underline; text-decoration-color: rgba(0,0,0,0.2); }
+    a:hover { text-decoration-color: currentColor; }
+    .building-links { margin-top: 3px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .ext-link {
+      font-size: 10px;
+      color: #185FA5;
+      text-decoration: none;
+      background: #E6F1FB;
+      padding: 1px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .ext-link:hover { background: #cce3f7; text-decoration: none; }
+
+    /* Cell content */
+    .rank {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6B6A65;
+      background: #F1EFE8;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rank.active { background: #E1F5EE; color: #0F6E56; }
+
+    .unit     { font-weight: 600; font-size: 13px; }
+    .building-name { font-size: 11px; color: #6B6A65; margin-top: 2px; }
+    .card-bldg-hint { display: none; }
+    .price    { font-weight: 600; white-space: nowrap; }
+    .type-cell { white-space: nowrap; }
+    .notes    { font-size: 11.5px; color: #5F5E5A; min-width: 200px; line-height: 1.5; }
+    .score    { font-weight: 700; font-size: 15px; text-align: center; white-space: nowrap; }
+    .score-hi  { color: #1D9E75; }
+    .score-mid { color: #2F80ED; }
+    .score-low { color: #D97706; }
+    .score-na  { color: #9B9A95; font-weight: 400; font-size: 12px; }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      font-size: 11.5px;
+      color: #6B6A65;
+    }
+    .leg-item { display: flex; align-items: center; gap: 6px; }
+    .leg-swatch { width: 12px; height: 12px; border-radius: 2px; }
+
+    /* Section dividers */
+    tr.section-header td {
+      background: #F5F4F0;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9B9A95;
+      padding: 6px 12px;
+      border-bottom: 1px solid #E5E3DB;
+    }
+
+    /* ─── MOBILE: card layout ─── */
+    @media (max-width: 768px) {
+      body { padding: 16px 12px 48px; }
+      header h1 { font-size: 18px; }
+
+      .table-wrap { overflow: visible; border: none; background: transparent; border-radius: 0; }
+      table, thead, tbody, th, td, tr { display: block; }
+      table { min-width: unset; width: 100%; }
+      thead { display: none; }
+
+      /* Section header rows */
+      tbody tr.section-header {
+        margin: 20px 0 8px;
         padding: 0;
-      }
-
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: #f9f8f5;
-        color: #1a1916;
-        padding: 32px 24px 64px;
-        min-height: 100vh;
-      }
-
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-
-      header {
-        margin-bottom: 20px;
-      }
-
-      header h1 {
-        font-size: 20px;
-        font-weight: 600;
-        color: #1a1916;
-        margin-bottom: 6px;
-      }
-
-      header p {
-        font-size: 13px;
-        color: #6b6a65;
-      }
-
-      .updated {
-        font-size: 11.5px;
-        color: #9b9a95;
-        margin-top: 4px;
-      }
-
-      /* Alert callouts */
-      .alert {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        background: #faeeda;
-        border: 1px solid #f0d9b0;
-        border-left: 3px solid #c97b20;
-        border-radius: 8px;
-        padding: 10px 14px;
-        margin-bottom: 12px;
-        font-size: 12.5px;
-        color: #5a3a0a;
-        line-height: 1.5;
-      }
-
-      .alert.alert-green {
-        background: #e8f8f2;
-        border-color: #b6e6d4;
-        border-left-color: #1d9e75;
-        color: #0a4535;
-        margin-bottom: 10px;
-      }
-
-      .alert strong {
-        font-weight: 600;
-      }
-
-      /* Score formula collapsible */
-      .formula-box {
-        margin-bottom: 12px;
-      }
-
-      .formula-box summary {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 11.5px;
-        font-weight: 500;
-        color: #6b6a65;
-        cursor: pointer;
-        user-select: none;
-        padding: 4px 0;
-      }
-
-      .formula-box summary::-webkit-details-marker {
-        display: none;
-      }
-      .formula-box summary::before {
-        content: "▸";
-        font-size: 10px;
-        transition: transform 0.15s;
-      }
-      .formula-box[open] summary::before {
-        transform: rotate(90deg);
-      }
-
-      .formula-inner {
-        margin-top: 8px;
-        background: #f5f4f0;
-        border: 1px solid #e5e3db;
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-size: 11.5px;
-        color: #3a3935;
-        line-height: 1.7;
-      }
-
-      .formula-inner table {
-        min-width: unset;
-        width: auto;
-        font-size: 11.5px;
-        border-collapse: collapse;
-        margin-top: 6px;
-      }
-
-      .formula-inner td,
-      .formula-inner th {
-        padding: 3px 10px 3px 0;
-        border-bottom: none;
-        vertical-align: top;
-        color: #3a3935;
+        border: none;
         background: transparent;
-        text-transform: none;
-        letter-spacing: 0;
-        font-size: 11.5px;
-        font-weight: 400;
       }
-
-      .formula-inner th {
-        font-weight: 600;
-        color: #6b6a65;
-      }
-
-      .formula-total {
-        margin-top: 8px;
-        font-weight: 600;
-        color: #1a1916;
-      }
-
-      .table-wrap {
-        overflow-x: auto;
-        border-radius: 10px;
-        border: 1px solid #e5e3db;
-        background: #fff;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12.5px;
-        min-width: 1100px;
-      }
-
-      th {
-        background: #f5f4f0;
-        color: #6b6a65;
-        font-weight: 500;
-        font-size: 10.5px;
+      tbody tr.section-header td {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #D8D5CC;
+        padding: 0 0 5px 0;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 10px 12px;
-        text-align: left;
-        border-bottom: 1px solid #e5e3db;
-        white-space: nowrap;
+        color: #9B9A95;
       }
 
-      td {
-        padding: 10px 12px;
-        border-bottom: 1px solid #eeecea;
-        vertical-align: top;
-        color: #1a1916;
-        line-height: 1.45;
+      /* Data rows become cards */
+      tbody tr:not(.section-header) {
+        background: #fff;
+        border: 1px solid #E5E3DB;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 14px;
+        overflow: visible;
       }
+      tbody tr:not(.section-header) td {
+        padding: 0;
+        border: none;
+      }
+      tbody tr.top5 { border-left: 3px solid #1D9E75; }
+      tbody tr.top5 > td:first-child { border-left: none; }
 
-      tr:last-child td {
-        border-bottom: none;
-      }
+      /* Hide rank on mobile */
+      tbody tr:not(.section-header) > td:nth-child(1) { display: none; }
 
-      /* Row states */
-      tr.top5 td:first-child {
-        border-left: 3px solid #1d9e75;
-      }
-      tr.top5 td {
-        background: #fdfffe;
-      }
+      /* Score + Unit — shown inline as card header */
+      tbody tr:not(.section-header) > td:nth-child(2) { display: inline-block; margin-right: 6px; vertical-align: middle; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(3) { display: inline-block; margin-bottom: 3px; vertical-align: middle; }
+      tbody tr:not(.section-header) > td:nth-child(3) .unit { font-size: 15px; }
 
-      tr.lost td {
-        opacity: 0.45;
-      }
-      tr.no-offer td {
-        opacity: 0.4;
-      }
+      /* Building — subtitle with links */
+      tbody tr:not(.section-header) > td:nth-child(4) { margin-bottom: 10px; }
+      tbody tr:not(.section-header) > td:nth-child(4) .building-name { font-size: 11.5px; }
 
-      /* Badges */
-      .badge {
+      /* Price + Type on same line */
+      tbody tr:not(.section-header) > td:nth-child(5) {
         display: inline-block;
-        font-size: 10px;
-        font-weight: 500;
-        padding: 2px 7px;
-        border-radius: 4px;
-        white-space: nowrap;
+        font-size: 15px;
+        font-weight: 700;
+        margin-right: 6px;
+        margin-bottom: 8px;
       }
-      .b-green {
-        background: #e1f5ee;
-        color: #0f6e56;
-      }
-      .b-red {
-        background: #fcebeb;
-        color: #a32d2d;
-      }
-      .b-amber {
-        background: #faeeda;
-        color: #854f0b;
-      }
-      .b-gray {
-        background: #f1efe8;
-        color: #5f5e5a;
-      }
-      .b-blue {
-        background: #e6f1fb;
-        color: #185fa5;
-      }
-      .b-purple {
-        background: #eeedfe;
-        color: #534ab7;
+      tbody tr:not(.section-header) > td:nth-child(6) {
+        display: inline-block;
+        font-size: 12px;
+        color: #6B6A65;
+        margin-bottom: 8px;
+        vertical-align: middle;
       }
 
-      /* Links */
-      a {
-        color: inherit;
-        text-decoration: underline;
-        text-decoration-color: rgba(0, 0, 0, 0.2);
+      /* Badge cells — wrap inline */
+      tbody tr:not(.section-header) > td:nth-child(7),
+      tbody tr:not(.section-header) > td:nth-child(8),
+      tbody tr:not(.section-header) > td:nth-child(9),
+      tbody tr:not(.section-header) > td:nth-child(10),
+      tbody tr:not(.section-header) > td:nth-child(11) {
+        display: inline-block;
+        margin-right: 4px;
+        margin-bottom: 6px;
+        vertical-align: top;
       }
-      a:hover {
-        text-decoration-color: currentColor;
-      }
-      .building-links {
-        margin-top: 3px;
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .ext-link {
-        font-size: 10px;
-        color: #185fa5;
-        text-decoration: none;
-        background: #e6f1fb;
-        padding: 1px 6px;
-        border-radius: 3px;
-        white-space: nowrap;
-      }
-      .ext-link:hover {
-        background: #cce3f7;
-        text-decoration: none;
+      /* Small label before each badge group */
+      tbody tr:not(.section-header) > td:nth-child(7)::before { content: "Parking"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(8)::before { content: "Gym"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(9)::before { content: "Pool"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(10)::before { content: "Viewed"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(11)::before { content: "Status"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+
+      /* Notes — full width at bottom */
+      tbody tr:not(.section-header) > td:nth-child(12) {
+        min-width: unset;
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        margin-top: 8px;
+        padding-top: 10px;
+        border-top: 1px solid #EEECEA !important;
+        font-size: 12px;
+        color: #5F5E5A;
+        line-height: 1.55;
       }
 
-      /* Cell content */
-      .rank {
-        font-size: 11px;
-        font-weight: 500;
-        color: #6b6a65;
-        background: #f1efe8;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+      .notes { min-width: unset; }
+
+      /* ── Expand / collapse ── */
+      tbody tr:not(.section-header) {
+        cursor: pointer;
+        position: relative;
+        padding-right: 34px;
       }
-      .rank.active {
-        background: #e1f5ee;
-        color: #0f6e56;
+      tbody tr:not(.section-header)::after {
+        content: '▾';
+        position: absolute;
+        top: 14px;
+        right: 12px;
+        font-size: 16px;
+        color: #9B9A95;
+        transition: transform 0.2s;
+        pointer-events: none;
+      }
+      tbody tr:not(.section-header).expanded::after {
+        transform: rotate(180deg);
       }
 
-      .unit {
-        font-weight: 600;
-        font-size: 13px;
-      }
-      .building-name {
-        font-size: 11px;
-        color: #6b6a65;
-        margin-top: 2px;
-      }
-      .card-bldg-hint {
+      /* Collapsed: hide detail cells */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(4),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(6),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(7),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(8),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(9),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(10),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(12) {
         display: none;
       }
-      .price {
-        font-weight: 600;
+      /* Collapsed: hide the "Status" label above badge but keep badge */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(11)::before {
+        display: none;
+      }
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(11) {
+        margin-bottom: 0;
+        vertical-align: middle;
+      }
+      /* Collapsed: price + status inline, no bottom gap */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(5) {
+        margin-bottom: 4px;
+      }
+
+      /* Building name hint shown only in collapsed state */
+      .card-bldg-hint {
+        display: block;
+        font-size: 10.5px;
+        color: #9B9A95;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
+        max-width: calc(100vw - 100px);
       }
-      .type-cell {
-        white-space: nowrap;
+      tbody tr.expanded .card-bldg-hint { display: none; }
+
+      /* Expanded: thin divider before the badge row */
+      tbody tr:not(.section-header).expanded > td:nth-child(7) {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #EEECEA;
       }
-      .notes {
-        font-size: 11.5px;
-        color: #5f5e5a;
-        min-width: 200px;
-        line-height: 1.5;
-      }
-      .score {
-        font-weight: 700;
-        font-size: 15px;
-        text-align: center;
-        white-space: nowrap;
-      }
-      .score-hi {
-        color: #1d9e75;
-      }
-      .score-mid {
-        color: #2f80ed;
-      }
-      .score-low {
-        color: #d97706;
-      }
-      .score-na {
-        color: #9b9a95;
-        font-weight: 400;
-        font-size: 12px;
-      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
 
-      /* Legend */
-      .legend {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-        margin-top: 16px;
-        font-size: 11.5px;
-        color: #6b6a65;
-      }
-      .leg-item {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .leg-swatch {
-        width: 12px;
-        height: 12px;
-        border-radius: 2px;
-      }
+  <header>
+    <h1>Toronto Rental Shortlist</h1>
+    <p>All listings &middot; Priority order &middot; Top 5 for Single Key highlighted in green</p>
+    <p class="updated">Last updated: <span id="lastUpdated">24 March 2026</span></p>
+  </header>
 
-      /* Section dividers */
-      tr.section-header td {
-        background: #f5f4f0;
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #9b9a95;
-        padding: 6px 12px;
-        border-bottom: 1px solid #e5e3db;
-      }
+  <div class="alert alert-green">
+    <span>&#9733;</span>
+    <span><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The building is the main draw. A great gym, indoor + outdoor pool, sauna, steam room, and basketball court function as an extension of the apartment - meaning the unit doesn&rsquo;t have to do everything on its own. If the amenities are poor, you&rsquo;re effectively locked inside your apartment. The alternative would be a GoodLife membership (discounted through Michael&rsquo;s girlfriend, but still an added cost) and having to leave the building every time you want a proper workout. Broadway removes that problem entirely.</span>
+  </div>
 
-      /* ─── MOBILE: card layout ─── */
-      @media (max-width: 768px) {
-        body {
-          padding: 16px 12px 48px;
-        }
-        header h1 {
-          font-size: 18px;
-        }
+  <div class="alert">
+    <span>&#9888;</span>
+    <span><strong>110 &amp; 120 Broadway - application risk:</strong> Building management has been cautious about approving applicants without Canadian credit history or a local guarantor. Michael is a UK national with no Canadian credit file. No rejection issued, but Kenan is not confident of a yes. Treat all Broadway offers as uncertain until confirmed. <strong>If Broadway falls through, 39 Roehampton (E2 Condos) is the most realistic landing spot.</strong></span>
+  </div>
 
-        .table-wrap {
-          overflow: visible;
-          border: none;
-          background: transparent;
-          border-radius: 0;
-        }
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-          display: block;
-        }
-        table {
-          min-width: unset;
-          width: 100%;
-        }
-        thead {
-          display: none;
-        }
-
-        /* Section header rows */
-        tbody tr.section-header {
-          margin: 20px 0 8px;
-          padding: 0;
-          border: none;
-          background: transparent;
-        }
-        tbody tr.section-header td {
-          background: transparent;
-          border: none;
-          border-bottom: 1px solid #d8d5cc;
-          padding: 0 0 5px 0;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.07em;
-          text-transform: uppercase;
-          color: #9b9a95;
-        }
-
-        /* Data rows become cards */
-        tbody tr:not(.section-header) {
-          background: #fff;
-          border: 1px solid #e5e3db;
-          border-radius: 10px;
-          margin-bottom: 10px;
-          padding: 14px;
-          overflow: visible;
-        }
-        tbody tr:not(.section-header) td {
-          padding: 0;
-          border: none;
-        }
-        tbody tr.top5 {
-          border-left: 3px solid #1d9e75;
-        }
-        tbody tr.top5 > td:first-child {
-          border-left: none;
-        }
-
-        /* Hide rank on mobile */
-        tbody tr:not(.section-header) > td:nth-child(1) {
-          display: none;
-        }
-
-        /* Score + Unit — shown inline as card header */
-        tbody tr:not(.section-header) > td:nth-child(2) {
-          display: inline-block;
-          margin-right: 6px;
-          vertical-align: middle;
-          margin-bottom: 3px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(3) {
-          display: inline-block;
-          margin-bottom: 3px;
-          vertical-align: middle;
-        }
-        tbody tr:not(.section-header) > td:nth-child(3) .unit {
-          font-size: 15px;
-        }
-
-        /* Building — subtitle with links */
-        tbody tr:not(.section-header) > td:nth-child(4) {
-          margin-bottom: 10px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(4) .building-name {
-          font-size: 11.5px;
-        }
-
-        /* Price + Type on same line */
-        tbody tr:not(.section-header) > td:nth-child(5) {
-          display: inline-block;
-          font-size: 15px;
-          font-weight: 700;
-          margin-right: 6px;
-          margin-bottom: 8px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(6) {
-          display: inline-block;
-          font-size: 12px;
-          color: #6b6a65;
-          margin-bottom: 8px;
-          vertical-align: middle;
-        }
-
-        /* Badge cells — wrap inline */
-        tbody tr:not(.section-header) > td:nth-child(7),
-        tbody tr:not(.section-header) > td:nth-child(8),
-        tbody tr:not(.section-header) > td:nth-child(9),
-        tbody tr:not(.section-header) > td:nth-child(10),
-        tbody tr:not(.section-header) > td:nth-child(11) {
-          display: inline-block;
-          margin-right: 4px;
-          margin-bottom: 6px;
-          vertical-align: top;
-        }
-        /* Small label before each badge group */
-        tbody tr:not(.section-header) > td:nth-child(7)::before {
-          content: "Parking";
-          font-size: 10px;
-          color: #9b9a95;
-          display: block;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 3px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(8)::before {
-          content: "Gym";
-          font-size: 10px;
-          color: #9b9a95;
-          display: block;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 3px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(9)::before {
-          content: "Pool";
-          font-size: 10px;
-          color: #9b9a95;
-          display: block;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 3px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(10)::before {
-          content: "Viewed";
-          font-size: 10px;
-          color: #9b9a95;
-          display: block;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 3px;
-        }
-        tbody tr:not(.section-header) > td:nth-child(11)::before {
-          content: "Status";
-          font-size: 10px;
-          color: #9b9a95;
-          display: block;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin-bottom: 3px;
-        }
-
-        /* Notes — full width at bottom */
-        tbody tr:not(.section-header) > td:nth-child(12) {
-          min-width: unset;
-          width: 100%;
-          max-width: 100%;
-          overflow-wrap: break-word;
-          word-break: break-word;
-          margin-top: 8px;
-          padding-top: 10px;
-          border-top: 1px solid #eeecea !important;
-          font-size: 12px;
-          color: #5f5e5a;
-          line-height: 1.55;
-        }
-
-        .notes {
-          min-width: unset;
-        }
-
-        /* ── Expand / collapse ── */
-        tbody tr:not(.section-header) {
-          cursor: pointer;
-          position: relative;
-          padding-right: 34px;
-        }
-        tbody tr:not(.section-header)::after {
-          content: "▾";
-          position: absolute;
-          top: 14px;
-          right: 12px;
-          font-size: 16px;
-          color: #9b9a95;
-          transition: transform 0.2s;
-          pointer-events: none;
-        }
-        tbody tr:not(.section-header).expanded::after {
-          transform: rotate(180deg);
-        }
-
-        /* Collapsed: hide detail cells */
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(4),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(6),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(7),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(8),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(9),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(10),
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(12) {
-          display: none;
-        }
-        /* Collapsed: hide the "Status" label above badge but keep badge */
-        tbody
-          tr:not(.section-header):not(.expanded)
-          > td:nth-child(11)::before {
-          display: none;
-        }
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(11) {
-          margin-bottom: 0;
-          vertical-align: middle;
-        }
-        /* Collapsed: price + status inline, no bottom gap */
-        tbody tr:not(.section-header):not(.expanded) > td:nth-child(5) {
-          margin-bottom: 4px;
-        }
-
-        /* Building name hint shown only in collapsed state */
-        .card-bldg-hint {
-          display: block;
-          font-size: 10.5px;
-          color: #9b9a95;
-          margin-top: 2px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          max-width: calc(100vw - 100px);
-        }
-        tbody tr.expanded .card-bldg-hint {
-          display: none;
-        }
-
-        /* Expanded: thin divider before the badge row */
-        tbody tr:not(.section-header).expanded > td:nth-child(7) {
-          margin-top: 8px;
-          padding-top: 8px;
-          border-top: 1px solid #eeecea;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>Toronto Rental Shortlist</h1>
-        <p>
-          All listings &middot; Priority order &middot; Top 5 for Single Key
-          highlighted in green
-        </p>
-        <p class="updated">
-          Last updated: <span id="lastUpdated">24 March 2026</span>
-        </p>
-      </header>
-
-      <div class="alert alert-green">
-        <span>&#9733;</span>
-        <span
-          ><strong>Why 110 &amp; 120 Broadway stay top of the list:</strong> The
-          building is the main draw. A great gym, indoor + outdoor pool, sauna,
-          steam room, and basketball court function as an extension of the
-          apartment - meaning the unit doesn&rsquo;t have to do everything on
-          its own. If the amenities are poor, you&rsquo;re effectively locked
-          inside your apartment. The alternative would be a GoodLife membership
-          (discounted through Michael&rsquo;s girlfriend, but still an added
-          cost) and having to leave the building every time you want a proper
-          workout. Broadway removes that problem entirely.</span
-        >
-      </div>
-
-      <div class="alert">
-        <span>&#9888;</span>
-        <span
-          ><strong>110 &amp; 120 Broadway - application risk:</strong> Building
-          management has been cautious about approving applicants without
-          Canadian credit history or a local guarantor. Michael is a UK national
-          with no Canadian credit file. No rejection issued, but Kenan is not
-          confident of a yes. Treat all Broadway offers as uncertain until
-          confirmed.
-          <strong
-            >If Broadway falls through, 39 Roehampton (E2 Condos) is the most
-            realistic landing spot.</strong
-          ></span
-        >
-      </div>
-
-      <details class="formula-box">
-        <summary>Score formula</summary>
-        <div class="formula-inner">
-          <strong>Score = sum of all components (max ~15)</strong>
-          <table>
-            <tr>
-              <th>Component</th>
-              <th>Values</th>
-            </tr>
-            <tr>
-              <td>Gym</td>
-              <td>
-                0 = no gym &nbsp;|&nbsp; 1 = basic &nbsp;|&nbsp; 2 = good
-                &nbsp;|&nbsp; 3 = excellent
-              </td>
-            </tr>
-            <tr>
-              <td>Pool</td>
-              <td>0 = none or outdoor &nbsp;|&nbsp; 1 = indoor + outdoor</td>
-            </tr>
-            <tr>
-              <td>Sauna</td>
-              <td>
-                0 = none &nbsp;|&nbsp; 1 = yes &nbsp;(Line 5 buildings only)
-              </td>
-            </tr>
-            <tr>
-              <td>Price</td>
-              <td>
-                3.0 at &le;$2,100 &nbsp;|&nbsp; &minus;0.1 per $50 above
-                &nbsp;(formula: 3.0 &minus; floor((price &minus; 2100) / 50)
-                &times; 0.1)
-              </td>
-            </tr>
-            <tr>
-              <td>Parking</td>
-              <td>0 = none or rentable &nbsp;|&nbsp; 1 = included</td>
-            </tr>
-            <tr>
-              <td>Facing</td>
-              <td>
-                S = 1.0 &nbsp;|&nbsp; SE/SW = 0.75 &nbsp;|&nbsp; E/W = 0.5
-                &nbsp;|&nbsp; NE/NW = 0.25 &nbsp;|&nbsp; N = 0
-              </td>
-            </tr>
-            <tr>
-              <td>Bath</td>
-              <td>1 bath = 1.0 &nbsp;|&nbsp; 2 bath = 2.0</td>
-            </tr>
-            <tr>
-              <td>Balcony</td>
-              <td>0 = none &nbsp;|&nbsp; 1 = 0.5 &nbsp;|&nbsp; 2+ = 1.0</td>
-            </tr>
-            <tr>
-              <td>Sqft</td>
-              <td>
-                &lt;600 = 0 &nbsp;|&nbsp; 600&ndash;699 = 0.5 &nbsp;|&nbsp;
-                &ge;700 = 1.0
-              </td>
-            </tr>
-            <tr>
-              <td>Floor</td>
-              <td>
-                &lt;10 = 0 &nbsp;|&nbsp; 10&ndash;19 = 0.5 &nbsp;|&nbsp; &ge;20
-                = 1.0
-              </td>
-            </tr>
-          </table>
-          <p class="formula-total">
-            Score colours: &ge;10.0 green &nbsp;|&nbsp; 7.0&ndash;9.99 blue
-            &nbsp;|&nbsp; &lt;7.0 amber
-          </p>
-        </div>
-      </details>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Score</th>
-              <th>Unit</th>
-              <th>Building</th>
-              <th>Price / mo</th>
-              <th>Type</th>
-              <th>Parking</th>
-              <th>Gym</th>
-              <th>Pool</th>
-              <th>Viewed</th>
-              <th>Offer status</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody id="units-body"></tbody>
-        </table>
-      </div>
-
-      <div class="legend">
-        <div class="leg-item">
-          <div
-            class="leg-swatch"
-            style="background: #e1f5ee; border-left: 3px solid #1d9e75"
-          ></div>
-          Top 5 by score
-        </div>
-        <div class="leg-item">
-          <div
-            class="leg-swatch"
-            style="background: #f1efe8; opacity: 0.5"
-          ></div>
-          Lost / no offer (dimmed)
-        </div>
-      </div>
+  <details class="formula-box">
+    <summary>Score formula</summary>
+    <div class="formula-inner">
+      <strong>Score = sum of all components (max ~15)</strong>
+      <table>
+        <tr><th>Component</th><th>Values</th></tr>
+        <tr><td>Gym</td><td>0 = no gym &nbsp;|&nbsp; 1 = basic &nbsp;|&nbsp; 2 = good &nbsp;|&nbsp; 3 = excellent</td></tr>
+        <tr><td>Pool</td><td>0 = none or outdoor &nbsp;|&nbsp; 1 = indoor + outdoor</td></tr>
+        <tr><td>Sauna</td><td>0 = none &nbsp;|&nbsp; 1 = yes &nbsp;(Line 5 buildings only)</td></tr>
+        <tr><td>Price</td><td>3.0 at &le;$2,100 &nbsp;|&nbsp; &minus;0.1 per $50 above &nbsp;(formula: 3.0 &minus; floor((price &minus; 2100) / 50) &times; 0.1)</td></tr>
+        <tr><td>Parking</td><td>0 = none or rentable &nbsp;|&nbsp; 1 = included</td></tr>
+        <tr><td>Facing</td><td>S = 1.0 &nbsp;|&nbsp; SE/SW = 0.75 &nbsp;|&nbsp; E/W = 0.5 &nbsp;|&nbsp; NE/NW = 0.25 &nbsp;|&nbsp; N = 0</td></tr>
+        <tr><td>Bath</td><td>1 bath = 1.0 &nbsp;|&nbsp; 2 bath = 2.0</td></tr>
+        <tr><td>Balcony</td><td>0 = none &nbsp;|&nbsp; 1 = 0.5 &nbsp;|&nbsp; 2+ = 1.0</td></tr>
+        <tr><td>Sqft</td><td>&lt;600 = 0 &nbsp;|&nbsp; 600&ndash;699 = 0.5 &nbsp;|&nbsp; &ge;700 = 1.0</td></tr>
+        <tr><td>Floor</td><td>&lt;10 = 0 &nbsp;|&nbsp; 10&ndash;19 = 0.5 &nbsp;|&nbsp; &ge;20 = 1.0</td></tr>
+      </table>
+      <p class="formula-total">Score colours: &ge;10.0 green &nbsp;|&nbsp; 7.0&ndash;9.99 blue &nbsp;|&nbsp; &lt;7.0 amber</p>
     </div>
+  </details>
 
-    <script>
-      // ─────────────────────────────────────────────
-      //  BUILDINGS
-      //  gym: 0=none, 1=basic, 2=good, 3=excellent
-      //  pool: 'indoor+outdoor' | 'outdoor' | 'none'
-      //  sauna: true/false
-      // ─────────────────────────────────────────────
-      const BUILDINGS = {
-        "110B": {
-          name: "110 Broadway (Untitled North)",
-          officialSite: "https://untitledtorontocondo.com/",
-          strataBase:
-            "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower",
-          gym: 3,
-          pool: "indoor+outdoor",
-          sauna: false,
-        },
-        "120B": {
-          name: "120 Broadway (Untitled South)",
-          officialSite: "https://untitledtorontocondo.com/",
-          strataBase: "https://strata.ca/toronto/120-broadway-ave",
-          gym: 3,
-          pool: "indoor+outdoor",
-          sauna: false,
-        },
-        "L5-117": {
-          name: "117 Broadway (Line 5 South)",
-          officialSite: "https://line5condos.com/",
-          strataBase:
-            "https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower",
-          gym: 2,
-          pool: "outdoor",
-          sauna: true,
-        },
-        "L5-127": {
-          name: "127 Broadway (Line 5 South)",
-          officialSite: "https://line5condos.com/",
-          strataBase:
-            "https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower",
-          gym: 2,
-          pool: "outdoor",
-          sauna: true,
-        },
-        E2: {
-          name: "39 Roehampton (E2 Condos)",
-          officialSite: "https://e2condos.ca/",
-          strataBase: "https://strata.ca/toronto/39-roehampton-e2-condos",
-          gym: 3,
-          pool: "none",
-          sauna: false,
-        },
-        YS: {
-          name: "2161 Yonge / 20 Soudan (Y&amp;S Condos)",
-          officialSite: "https://www.tributecommunities.com/y_s/",
-          strataBase:
-            "https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos",
-          gym: 1,
-          pool: "none",
-          sauna: false,
-        },
-      };
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Score</th>
+          <th>Unit</th>
+          <th>Building</th>
+          <th>Price / mo</th>
+          <th>Type</th>
+          <th>Parking</th>
+          <th>Gym</th>
+          <th>Pool</th>
+          <th>Viewed</th>
+          <th>Offer status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="units-body"></tbody>
+    </table>
+  </div>
 
-      // ─────────────────────────────────────────────
-      //  UNITS
-      //
-      //  section:   'lost' | 'top5' | 'consideration' | 'fallbacks' | 'no-offer'
-      //  lost:      true if leased/lost (dims the row)
-      //  url:       unit-specific listing URL
-      //  price:     monthly rent in CAD, or null if unknown
-      //  beds:      1 | 2 | '1+den'
-      //  baths:     1 | 2
-      //  facing:    'S'|'SE'|'SW'|'E'|'W'|'NE'|'NW'|'N' or null
-      //  parking:   'included' | 'rentable' | 'none' | 'unknown'
-      //  balconies: 0 | 1 | 2  (null = unknown, treated as 0)
-      //  sqft:      actual sqft number, or null (unknown, scored as 0)
-      //  floor:     floor number (integer)
-      //  viewed:    true | false | 'possibly'
-      //  status:    { text: string, color: 'green'|'blue'|'amber'|'gray'|'red'|'purple' }
-      //  notes:     HTML string (use &rsquo; for apostrophes, &amp; for &)
-      // ─────────────────────────────────────────────
-      const UNITS = [
-        // ── LOST ──────────────────────────────────────────────────────────────────
-        {
-          section: "lost",
-          lost: true,
-          unit: "1010 S",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1010",
-          price: 2200,
-          beds: "1+den",
-          baths: 2,
-          facing: "E",
-          parking: "rentable",
-          balconies: 1,
-          sqft: null,
-          floor: 10,
-          viewed: true,
-          status: { text: "Lost", color: "red" },
-          notes:
-            "Light colour scheme. The ideal unit. Lost to another applicant.",
-        },
+  <div class="legend">
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#E1F5EE; border-left: 3px solid #1D9E75;"></div>
+      Top 5 by score
+    </div>
+    <div class="leg-item">
+      <div class="leg-swatch" style="background:#F1EFE8; opacity:0.5;"></div>
+      Lost / no offer (dimmed)
+    </div>
+  </div>
 
-        // ── TOP 5 ─────────────────────────────────────────────────────────────────
-        {
-          section: "active",
-          lost: false,
-          unit: "1805",
-          building: "120B",
-          url: "https://strata.ca/toronto/120-broadway-ave/unit-1805",
-          price: 2850,
-          beds: 2,
-          baths: 2,
-          facing: "SE",
-          parking: "included",
-          balconies: 2,
-          sqft: 633,
-          floor: 18,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Two balconies, SE-facing, lots of light. Parking + locker included. Higher floor than 1105. Interior 633 sqft (816 sqft total inc. 183 sqft balcony). Happy to offer blind.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2710 S",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2710",
-          price: 2249,
-          beds: "1+den",
-          baths: 2,
-          facing: "E",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 430,
-          floor: 27,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind. SingleKey screening in progress - email received asking for info.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2210",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2210",
-          price: 2200,
-          beds: "1+den",
-          baths: 2,
-          facing: "E",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 430,
-          floor: 22,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Same layout as 1010. Colour scheme unknown - if light, better than 2710 S (same spec, cheaper). Landlord went silent but SingleKey screening now in progress - email received asking for info.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "3111",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3111",
-          price: 2100,
-          beds: "1+den",
-          baths: 1,
-          facing: "W",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 415,
-          floor: 31,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Very high floor. Den off the kitchen behind a glass door - interior but feels open, gets borrowed light from the main living area. Preferred layout over 3103. West-facing unobstructed balcony. Would offer without viewing.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "3103",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3103",
-          price: 2100,
-          beds: "1+den",
-          baths: 1,
-          facing: "NW",
-          parking: "rentable",
-          balconies: 1,
-          sqft: null,
-          floor: 31,
-          viewed: true,
-          status: { text: "Offer", color: "amber" },
-          notes:
-            "Den is a dark entry alcove on the right as you walk in - no natural light, no city view. Large and can be enclosed but not ideal for an office or music room. Double-door bathroom accessible from kitchen and bedroom.",
-        },
+</div>
 
-        // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
-        {
-          section: "active",
-          lost: false,
-          unit: "1105",
-          building: "120B",
-          url: "https://strata.ca/toronto/120-broadway-ave/unit-1105",
-          price: 2950,
-          beds: 2,
-          baths: 2,
-          facing: "SE",
-          parking: "included",
-          balconies: 2,
-          sqft: 633,
-          floor: 11,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Same floor plan as 1805 - interior 633 sqft (816 total inc. balcony). Two balconies, SE-facing. Parking + locker included. Lower floor than 1805.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "1912",
-          building: "110B",
-          url: "https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1912",
-          price: 2950,
-          beds: 2,
-          baths: 2,
-          facing: "SE",
-          parking: "included",
-          balconies: 2,
-          sqft: 600,
-          floor: 19,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "Corner suite, 600 sqft, two balconies, SE facing. Parking included. Expensive relative to spec.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2211",
-          building: "L5-117",
-          url: "https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-2211",
-          price: 3000,
-          beds: 2,
-          baths: 2,
-          facing: "SE",
-          parking: "included",
-          balconies: 2,
-          sqft: 741,
-          floor: 22,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "810N",
-          building: "L5-117",
-          url: "https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/mls/c12811576",
-          price: 2850,
-          beds: 2,
-          baths: 2,
-          facing: "SE",
-          parking: "included",
-          balconies: 2,
-          sqft: 756,
-          floor: 8,
-          viewed: false,
-          status: { text: "Offer - no viewing", color: "amber" },
-          notes:
-            "756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2414",
-          building: "120B",
-          url: "https://strata.ca/toronto/120-broadway-ave/unit-2414",
-          price: 2575,
-          beds: "1+den",
-          baths: 2,
-          facing: "W",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 550,
-          floor: 24,
-          viewed: false,
-          status: { text: "Offer", color: "amber" },
-          notes:
-            "Listed as 2 bed but den has glass walls - same layout as the other 1+den units. Den is ~49 sqft (7'4\" x 6'8\"), enclosed with glass. Parking rentable separately.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "706",
-          building: "L5-117",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-706",
-          price: 2499,
-          beds: "1+den",
-          baths: 2,
-          facing: "E",
-          parking: "none",
-          balconies: 2,
-          sqft: 700,
-          floor: 7,
-          viewed: false,
-          status: { text: "Offer", color: "amber" },
-          notes:
-            "E-facing, 700-799 sqft, locker included. 172 days on market - landlord likely motivated to deal. Sauna confirmed. Low floor. Says to bed on the listing but it's actually a den because it has the glass window thing in the corner like the others.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "1505",
-          building: "L5-127",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1505",
-          price: 2350,
-          beds: 2,
-          baths: 2,
-          facing: "NE",
-          parking: "none",
-          balconies: 2,
-          sqft: 600,
-          floor: 15,
-          viewed: false,
-          status: { text: "Considering", color: "gray" },
-          notes:
-            "NE-facing, 600-699 sqft. No parking. Second bedroom is den-like per listing. $2,350.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2309",
-          building: "L5-127",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2309",
-          price: 2650,
-          beds: 2,
-          baths: 2,
-          facing: "NE",
-          parking: "none",
-          balconies: 2,
-          sqft: 600,
-          floor: 23,
-          viewed: false,
-          status: { text: "Considering", color: "gray" },
-          notes:
-            "NE-facing, 600-699 sqft. No parking. Most expensive of the Line 5 batch at $2,650.",
-        },
-        {
-          section: "active",
-          lost: true,
-          unit: "1707",
-          building: "L5-127",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1707",
-          price: 2400,
-          beds: 2,
-          baths: 2,
-          facing: "N",
-          parking: "none",
-          balconies: 2,
-          sqft: null,
-          floor: 17,
-          viewed: false,
-          status: { text: "Leased - gone", color: "red" },
-          notes:
-            "N-facing. Details MLS-restricted. No parking confirmed. $2,400.",
-        },
-        {
-          section: "active",
-          lost: true,
-          unit: "2811",
-          building: "L5-127",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2811",
-          price: 2200,
-          beds: 1,
-          baths: 1,
-          facing: "NE",
-          parking: "none",
-          balconies: 1,
-          sqft: null,
-          floor: 28,
-          viewed: false,
-          status: { text: "Leased - gone", color: "red" },
-          notes:
-            "1 bed/1 bath, NE-facing. High floor. No parking. Leased before offer made.",
-        },
+<script>
+// ─────────────────────────────────────────────
+//  BUILDINGS
+//  gym: 0=none, 1=basic, 2=good, 3=excellent
+//  pool: 'indoor+outdoor' | 'outdoor' | 'none'
+//  sauna: true/false
+// ─────────────────────────────────────────────
+const BUILDINGS = {
+  '110B': {
+    name: '110 Broadway (Untitled North)',
+    officialSite: 'https://untitledtorontocondo.com/',
+    strataBase:   'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower',
+    gym: 3, pool: 'indoor+outdoor', sauna: false,
+  },
+  '120B': {
+    name: '120 Broadway (Untitled South)',
+    officialSite: 'https://untitledtorontocondo.com/',
+    strataBase:   'https://strata.ca/toronto/120-broadway-ave',
+    gym: 3, pool: 'indoor+outdoor', sauna: false,
+  },
+  'L5-117': {
+    name: '117 Broadway (Line 5 South)',
+    officialSite: 'https://line5condos.com/',
+    strataBase:   'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower',
+    gym: 2, pool: 'outdoor', sauna: true,
+  },
+  'L5-127': {
+    name: '127 Broadway (Line 5 South)',
+    officialSite: 'https://line5condos.com/',
+    strataBase:   'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower',
+    gym: 2, pool: 'outdoor', sauna: true,
+  },
+  'E2': {
+    name: '39 Roehampton (E2 Condos)',
+    officialSite: 'https://e2condos.ca/',
+    strataBase:   'https://strata.ca/toronto/39-roehampton-e2-condos',
+    gym: 3, pool: 'none', sauna: false,
+  },
+  'YS': {
+    name: '2161 Yonge / 20 Soudan (Y&amp;S Condos)',
+    officialSite: 'https://www.tributecommunities.com/y_s/',
+    strataBase:   'https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos',
+    gym: 1, pool: 'none', sauna: false,
+  },
+};
 
-        {
-          section: "active",
-          lost: false,
-          unit: "602",
-          building: "E2",
-          url: "https://condoexchange.ca/toronto/39-roehampton-e2-condos/unit-602",
-          price: 2250,
-          beds: "1+den",
-          baths: 2,
-          facing: "E",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 650,
-          floor: 6,
-          viewed: true,
-          status: { text: "Offer", color: "amber" },
-          notes:
-            "Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines - best gym after 110/120 Broadway. No pool. Parking rentable separately. Low counter space - island needed. Kenan pushing for a reply.",
-        },
-        {
-          section: "active",
-          lost: false,
-          unit: "2705",
-          building: "YS",
-          url: "https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-2705",
-          price: 2600,
-          beds: "1+den",
-          baths: 1,
-          facing: "S",
-          parking: "included",
-          balconies: 1,
-          sqft: null,
-          floor: 27,
-          viewed: false,
-          status: { text: "Considering", color: "gray" },
-          notes:
-            "Not viewed. Floor 27, south-facing. Parking included but likely priced in. No pool, subpar gym, marble aesthetic, under construction. SingleKey screening confirmed.",
-        },
-        {
-          section: "active",
-          lost: true,
-          unit: "1805",
-          building: "YS",
-          url: "https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-1805",
-          price: 2100,
-          beds: "1+den",
-          baths: 1,
-          facing: "S",
-          parking: "rentable",
-          balconies: 1,
-          sqft: null,
-          floor: 18,
-          viewed: true,
-          status: { text: "Leased - gone", color: "red" },
-          notes:
-            "Den is a closed room - good for office but very cramped. South-facing with good views, some obstruction. No pool, subpar gym, parking rentable separately. Marble aesthetic, under construction. Agent confirmed SingleKey screening.",
-        },
+// ─────────────────────────────────────────────
+//  UNITS
+//
+//  section:   'lost' | 'active' | 'no-offer'
+//  lost:      true if leased/lost (dims the row)
+//  url:       unit-specific listing URL
+//  price:     monthly rent in CAD, or null if unknown
+//  beds:      1 | 2 | '1+den'
+//  baths:     1 | 2
+//  facing:    'S'|'SE'|'SW'|'E'|'W'|'NE'|'NW'|'N' or null
+//  parking:   'included' | 'rentable' | 'none' | 'unknown'
+//  balconies: 0 | 1 | 2  (null = unknown, treated as 0)
+//  sqft:      actual sqft number, or null (unknown, scored as 0)
+//  floor:     floor number (integer)
+//  viewed:    true | false | 'possibly'
+//  status:    { text: string, color: 'green'|'blue'|'amber'|'gray'|'red'|'purple' }
+//  notes:     HTML string (use &rsquo; for apostrophes, &amp; for &)
+// ─────────────────────────────────────────────
+const UNITS = [
 
-        // ── VIEWED - NO OFFER ─────────────────────────────────────────────────────
-        {
-          section: "no-offer",
-          lost: false,
-          unit: "1814",
-          building: "120B",
-          url: "https://strata.ca/toronto/120-broadway-ave/unit-1814",
-          price: 2150,
-          beds: "1+den",
-          baths: 2,
-          facing: "N",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 650,
-          floor: 18,
-          viewed: true,
-          status: { text: "No offer", color: "red" },
-          notes:
-            "Tiny living room - sofa collides with balcony door. Poor space utilisation.",
-        },
-        {
-          section: "no-offer",
-          lost: false,
-          unit: "712",
-          building: "120B",
-          url: "https://strata.ca/toronto/120-broadway-ave/unit-712",
-          price: 2300,
-          beds: "1+den",
-          baths: 2,
-          facing: "W",
-          parking: "rentable",
-          balconies: 1,
-          sqft: 650,
-          floor: 7,
-          viewed: true,
-          status: { text: "No offer", color: "red" },
-          notes:
-            "No room for sofa without facing a wall. Small kitchen. Minimal den space.",
-        },
-        {
-          section: "no-offer",
-          lost: false,
-          unit: "3404",
-          building: "L5-117",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-3404",
-          price: null,
-          beds: "1+den",
-          baths: 1,
-          facing: "S",
-          parking: "unknown",
-          balconies: null,
-          sqft: null,
-          floor: 34,
-          viewed: false,
-          status: { text: "No offer", color: "red" },
-          notes:
-            "Not viewed - rejected from listing. Den pushed into right corner by entrance, no natural light, looks like storage. Unit is a no. Building itself is good - gym has machines and a large yoga studio, plus sauna, steam room, spa, and jacuzzi. Many units available here worth checking. Same location as Broadway.",
-        },
-        {
-          section: "no-offer",
-          lost: false,
-          unit: "2004",
-          building: "L5-117",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2004",
-          price: 2100,
-          beds: "1+den",
-          baths: 1,
-          facing: "S",
-          parking: "none",
-          balconies: 2,
-          sqft: 500,
-          floor: 20,
-          viewed: false,
-          status: { text: "No offer", color: "red" },
-          notes:
-            "S-facing, 500-599 sqft. No parking. Best price in the Line 5 batch at $2,100. Good value score but no offer made - too small.",
-        },
-        {
-          section: "no-offer",
-          lost: false,
-          unit: "2106",
-          building: "L5-127",
-          url: "https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2106",
-          price: null,
-          beds: 1,
-          baths: 1,
-          facing: null,
-          parking: "unknown",
-          balconies: null,
-          sqft: null,
-          floor: 21,
-          viewed: false,
-          status: { text: "No offer", color: "red" },
-          notes:
-            "Already leased - 19 days on market. Price MLS-restricted. 1 bed/1 bath only. No pool listed in unit amenities. Sauna confirmed.",
-        },
-      ];
+  // ── LOST ──────────────────────────────────────────────────────────────────
+  {
+    section: 'lost', lost: true,
+    unit: '1010 S', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1010',
+    price: 2200, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 10,
+    viewed: true,
+    status: { text: 'Lost', color: 'red' },
+    notes: 'Light colour scheme. The ideal unit. Lost to another applicant.',
+  },
 
-      // ─────────────────────────────────────────────
-      //  SCORE FORMULA
-      // ─────────────────────────────────────────────
-      const FACING_SCORE = {
-        S: 1.0,
-        SE: 0.75,
-        SW: 0.75,
-        E: 0.5,
-        W: 0.5,
-        NE: 0.25,
-        NW: 0.25,
-        N: 0,
-      };
-      const FACING_COLOR = {
-        S: "green",
-        SE: "blue",
-        SW: "blue",
-        E: "gray",
-        W: "gray",
-        NE: "amber",
-        NW: "amber",
-        N: "red",
-      };
+  // ── TOP 5 ─────────────────────────────────────────────────────────────────
+  {
+    section: 'active', lost: false,
+    unit: '1805', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1805',
+    price: 2850, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 633, floor: 18,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Two balconies, SE-facing, lots of light. Parking + locker included. Higher floor than 1105. Interior 633 sqft (816 sqft total inc. 183 sqft balcony). Happy to offer blind.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2710 S', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2710',
+    price: 2249, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: 430, floor: 27,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind. SingleKey screening in progress - email received asking for info.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2210', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2210',
+    price: 2200, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: 430, floor: 22,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Same layout as 1010. Colour scheme unknown - if light, better than 2710 S (same spec, cheaper). Landlord went silent but SingleKey screening now in progress - email received asking for info.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '3111', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3111',
+    price: 2100, beds: '1+den', baths: 1, facing: 'W',
+    parking: 'rentable', balconies: 1, sqft: 415, floor: 31,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Very high floor. Den off the kitchen behind a glass door - interior but feels open, gets borrowed light from the main living area. Preferred layout over 3103. West-facing unobstructed balcony. Would offer without viewing.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '3103', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3103',
+    price: 2100, beds: '1+den', baths: 1, facing: 'NW',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 31,
+    viewed: true,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Den is a dark entry alcove on the right as you walk in - no natural light, no city view. Large and can be enclosed but not ideal for an office or music room. Double-door bathroom accessible from kitchen and bedroom.',
+  },
 
-      function calcScore(unit) {
-        if (unit.price === null) return null;
-        const b = BUILDINGS[unit.building];
-        const gym = b.gym;
-        const pool = b.pool === "indoor+outdoor" ? 1 : 0;
-        const sauna = b.sauna ? 1 : 0;
-        const price =
-          unit.price <= 2100
-            ? 3.0
-            : Math.max(0, 3.0 - Math.floor((unit.price - 2100) / 50) * 0.1);
-        const parking = unit.parking === "included" ? 1 : 0;
-        const facing =
-          unit.facing !== null ? (FACING_SCORE[unit.facing] ?? 0) : 0;
-        const bath = unit.baths;
-        const balcony =
-          (unit.balconies ?? 0) === 0 ? 0 : unit.balconies === 1 ? 0.5 : 1.0;
-        const sqft =
-          unit.sqft === null
-            ? 0
-            : unit.sqft < 600
-              ? 0
-              : unit.sqft < 700
-                ? 0.5
-                : 1.0;
-        const floor = unit.floor < 10 ? 0 : unit.floor < 20 ? 0.5 : 1.0;
-        const total =
-          gym +
-          pool +
-          sauna +
-          price +
-          parking +
-          facing +
-          bath +
-          balcony +
-          sqft +
-          floor;
-        return Math.round(total * 100) / 100;
-      }
+  // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
+  {
+    section: 'active', lost: false,
+    unit: '1105', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1105',
+    price: 2950, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 633, floor: 11,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Same floor plan as 1805 - interior 633 sqft (816 total inc. balcony). Two balconies, SE-facing. Parking + locker included. Lower floor than 1805.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '1912', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1912',
+    price: 2950, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 600, floor: 19,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Corner suite, 600 sqft, two balconies, SE facing. Parking included. Expensive relative to spec.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2211', building: 'L5-117',
+    url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-2211',
+    price: 3000, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 741, floor: 22,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: '741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '810N', building: 'L5-117',
+    url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/mls/c12811576',
+    price: 2850, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 756, floor: 8,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: '756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2414', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-2414',
+    price: 2575, beds: '1+den', baths: 2, facing: 'W',
+    parking: 'rentable', balconies: 1, sqft: 550, floor: 24,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Listed as 2 bed but den has glass walls - same layout as the other 1+den units. Den is ~49 sqft (7\'4" x 6\'8"), enclosed with glass. Parking rentable separately.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '706', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-706',
+    price: 2499, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'none', balconies: 2, sqft: 700, floor: 7,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'E-facing, 700-799 sqft, locker included. 172 days on market - landlord likely motivated to deal. Sauna confirmed. Low floor. Says to bed on the listing but it\'s actually a den because it has the glass window thing in the corner like the others.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '1505', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1505',
+    price: 2350, beds: 2, baths: 2, facing: 'NE',
+    parking: 'none', balconies: 2, sqft: 600, floor: 15,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'NE-facing, 600-699 sqft. No parking. Second bedroom is den-like per listing. $2,350.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2309', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2309',
+    price: 2650, beds: 2, baths: 2, facing: 'NE',
+    parking: 'none', balconies: 2, sqft: 600, floor: 23,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'NE-facing, 600-699 sqft. No parking. Most expensive of the Line 5 batch at $2,650.',
+  },
+  {
+    section: 'active', lost: true,
+    unit: '1707', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1707',
+    price: 2400, beds: 2, baths: 2, facing: 'N',
+    parking: 'none', balconies: 2, sqft: null, floor: 17,
+    viewed: false,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: 'N-facing. Details MLS-restricted. No parking confirmed. $2,400.',
+  },
+  {
+    section: 'active', lost: true,
+    unit: '2811', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2811',
+    price: 2200, beds: 1, baths: 1, facing: 'NE',
+    parking: 'none', balconies: 1, sqft: null, floor: 28,
+    viewed: false,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: '1 bed/1 bath, NE-facing. High floor. No parking. Leased before offer made.',
+  },
 
-      function fmtScore(s) {
-        if (s === null) return "N/A";
-        const s1 = s.toFixed(1);
-        return parseFloat(s1) === s ? s1 : s.toFixed(2);
-      }
+  {
+    section: 'active', lost: false,
+    unit: '602', building: 'E2',
+    url: 'https://condoexchange.ca/toronto/39-roehampton-e2-condos/unit-602',
+    price: 2250, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 6,
+    viewed: true,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines - best gym after 110/120 Broadway. No pool. Parking rentable separately. Low counter space - island needed. Kenan pushing for a reply.',
+  },
+  {
+    section: 'active', lost: false,
+    unit: '2705', building: 'YS',
+    url: 'https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-2705',
+    price: 2600, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'included', balconies: 1, sqft: null, floor: 27,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'Not viewed. Floor 27, south-facing. Parking included but likely priced in. No pool, subpar gym, marble aesthetic, under construction. SingleKey screening confirmed.',
+  },
+  {
+    section: 'active', lost: true,
+    unit: '1805', building: 'YS',
+    url: 'https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-1805',
+    price: 2100, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 18,
+    viewed: true,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: 'Den is a closed room - good for office but very cramped. South-facing with good views, some obstruction. $2,100 for 1 bed+den/1 bath, no pool, subpar gym, parking rentable separately - not good value in comparison to the ones above. Marble aesthetic, under construction. Good kitchen counter space. Weird living room nook. Agent confirmed they use SingleKey to screen tenants. Last resort only.',
+  },
 
-      function scoreClass(s) {
-        if (s === null) return "score-na";
-        if (s >= 10) return "score-hi";
-        if (s >= 7) return "score-mid";
-        return "score-low";
-      }
+  // ── VIEWED - NO OFFER ─────────────────────────────────────────────────────
+  {
+    section: 'no-offer', lost: false,
+    unit: '1814', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1814',
+    price: 2150, beds: '1+den', baths: 2, facing: 'N',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 18,
+    viewed: true,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Tiny living room - sofa collides with balcony door. Poor space utilisation.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '712', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-712',
+    price: 2300, beds: '1+den', baths: 2, facing: 'W',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 7,
+    viewed: true,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'No room for sofa without facing a wall. Small kitchen. Minimal den space.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '3404', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-3404',
+    price: null, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'unknown', balconies: null, sqft: null, floor: 34,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Not viewed - rejected from listing. Den pushed into right corner by entrance, no natural light, looks like storage. Unit is a no. Building itself is good - gym has machines and a large yoga studio, plus sauna, steam room, spa, and jacuzzi. Many units available here worth checking. Same location as Broadway.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '2004', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2004',
+    price: 2100, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'none', balconies: 2, sqft: 500, floor: 20,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'S-facing, 500-599 sqft. No parking. Best price in the Line 5 batch at $2,100. Good value score but no offer made - too small.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '2106', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2106',
+    price: null, beds: 1, baths: 1, facing: null,
+    parking: 'unknown', balconies: null, sqft: null, floor: 21,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Already leased - 19 days on market. Price MLS-restricted. 1 bed/1 bath only. No pool listed in unit amenities. Sauna confirmed.',
+  },
+];
 
-      // ─────────────────────────────────────────────
-      //  BADGE HELPERS
-      // ─────────────────────────────────────────────
-      function badge(text, color) {
-        return `<span class="badge b-${color}">${text}</span>`;
-      }
+// ─────────────────────────────────────────────
+//  SCORE FORMULA
+// ─────────────────────────────────────────────
+const FACING_SCORE = { S: 1.0, SE: 0.75, SW: 0.75, E: 0.5, W: 0.5, NE: 0.25, NW: 0.25, N: 0 };
+const FACING_COLOR = { S: 'green', SE: 'blue', SW: 'blue', E: 'gray', W: 'gray', NE: 'amber', NW: 'amber', N: 'red' };
 
-      function gymBadge(level) {
-        if (level >= 3) return badge("Yes (extensive)", "blue");
-        if (level === 2) return badge("Yes (good)", "green");
-        if (level === 1) return badge("Subpar", "amber");
-        return badge("No gym", "red");
-      }
+function calcScore(unit) {
+  if (unit.price === null) return null;
+  const b = BUILDINGS[unit.building];
+  const gym      = b.gym;
+  const pool     = b.pool === 'indoor+outdoor' ? 1 : 0;
+  const sauna    = b.sauna ? 1 : 0;
+  const price    = unit.price <= 2100
+                     ? 3.0
+                     : Math.max(0, 3.0 - Math.floor((unit.price - 2100) / 50) * 0.1);
+  const parking  = unit.parking === 'included' ? 1 : 0;
+  const facing   = unit.facing !== null ? (FACING_SCORE[unit.facing] ?? 0) : 0;
+  const bath     = unit.baths;
+  const balcony  = (unit.balconies ?? 0) === 0 ? 0 : unit.balconies === 1 ? 0.5 : 1.0;
+  const sqft     = unit.sqft === null ? 0 : unit.sqft < 600 ? 0 : unit.sqft < 700 ? 0.5 : 1.0;
+  const floor    = unit.floor < 10 ? 0 : unit.floor < 20 ? 0.5 : 1.0;
+  const total    = gym + pool + sauna + price + parking + facing + bath + balcony + sqft + floor;
+  return Math.round(total * 100) / 100;
+}
 
-      function poolBadge(pool) {
-        if (pool === "indoor+outdoor")
-          return badge("Yes (indoor + outdoor)", "green");
-        if (pool === "outdoor") return badge("Outdoor only", "amber");
-        return badge("No pool", "red");
-      }
+function fmtScore(s) {
+  if (s === null) return 'N/A';
+  const s1 = s.toFixed(1);
+  return parseFloat(s1) === s ? s1 : s.toFixed(2);
+}
 
-      function parkingBadge(p) {
-        if (p === "included") return badge("Yes (incl.)", "green");
-        if (p === "rentable") return badge("Rentable separately", "amber");
-        if (p === "unknown") return badge("Unknown", "gray");
-        return badge("No", "red");
-      }
+function scoreClass(s) {
+  if (s === null) return 'score-na';
+  if (s >= 10)   return 'score-hi';
+  if (s >= 7)    return 'score-mid';
+  return 'score-low';
+}
 
-      function viewedBadge(v) {
-        if (v === true) return badge("Yes", "blue");
-        if (v === "possibly") return badge("Possibly", "gray");
-        return badge("No", "red");
-      }
+// ─────────────────────────────────────────────
+//  BADGE HELPERS
+// ─────────────────────────────────────────────
+function badge(text, color) {
+  return `<span class="badge b-${color}">${text}</span>`;
+}
 
-      function bedsLabel(b) {
-        if (b === "1+den") return "1 bed + den";
-        return b + " bed";
-      }
+function gymBadge(level) {
+  if (level >= 3) return badge('Yes (extensive)', 'blue');
+  if (level === 2) return badge('Yes (good)', 'green');
+  if (level === 1) return badge('Subpar', 'amber');
+  return badge('No gym', 'red');
+}
 
-      // ─────────────────────────────────────────────
-      //  RENDER
-      // ─────────────────────────────────────────────
-      const SECTIONS = [
-        { id: "lost", label: "Lost" },
-        { id: "active", label: "Shortlist" },
-        { id: "no-offer", label: "Viewed - no offer" },
-      ];
+function poolBadge(pool) {
+  if (pool === 'indoor+outdoor') return badge('Yes (indoor + outdoor)', 'green');
+  if (pool === 'outdoor')        return badge('Outdoor only', 'amber');
+  return badge('No pool', 'red');
+}
 
-      function renderRow(unit, rank, isTop5) {
-        const b = BUILDINGS[unit.building];
-        const s = calcScore(unit);
-        const sCls = scoreClass(s);
-        const sStr = fmtScore(s);
-        const isNO = unit.section === "no-offer";
-        const rowCls = isTop5
-          ? "top5"
-          : unit.lost
-            ? "lost"
-            : isNO
-              ? "no-offer"
-              : "";
-        const rankEl = isNO
-          ? '<span class="rank">-</span>'
-          : `<span class="rank${isTop5 ? " active" : ""}">${rank}</span>`;
-        const facingEl = unit.facing
-          ? `<br><span class="badge b-${FACING_COLOR[unit.facing]}" style="margin-top:3px">${unit.facing}</span>`
-          : "";
+function parkingBadge(p) {
+  if (p === 'included') return badge('Yes (incl.)', 'green');
+  if (p === 'rentable') return badge('Rentable separately', 'amber');
+  if (p === 'unknown')  return badge('Unknown', 'gray');
+  return badge('No', 'red');
+}
 
-        return `
-    <tr${rowCls ? ` class="${rowCls}"` : ""}>
+function viewedBadge(v) {
+  if (v === true)       return badge('Yes', 'blue');
+  if (v === 'possibly') return badge('Possibly', 'gray');
+  return badge('No', 'red');
+}
+
+function bedsLabel(b) {
+  if (b === '1+den') return '1 bed + den';
+  return b + ' bed';
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+const SECTIONS = [
+  { id: 'lost',      label: 'Lost' },
+  { id: 'active',    label: 'Shortlist' },
+  { id: 'no-offer',  label: 'Viewed - no offer' },
+];
+
+function renderRow(unit, rank, isTop5) {
+  const b        = BUILDINGS[unit.building];
+  const s        = calcScore(unit);
+  const sCls     = scoreClass(s);
+  const sStr     = fmtScore(s);
+  const isNO     = unit.section === 'no-offer';
+  const rowCls   = isTop5 ? 'top5' : (unit.lost ? 'lost' : (isNO ? 'no-offer' : ''));
+  const rankEl   = isNO
+    ? '<span class="rank">-</span>'
+    : `<span class="rank${isTop5 ? ' active' : ''}">${rank}</span>`;
+  const facingEl = unit.facing
+    ? `<br><span class="badge b-${FACING_COLOR[unit.facing]}" style="margin-top:3px">${unit.facing}</span>`
+    : '';
+
+  return `
+    <tr${rowCls ? ` class="${rowCls}"` : ''}>
       <td>${rankEl}</td>
       <td class="score"><span class="${sCls}">${sStr}</span></td>
       <td><div class="unit"><a href="${unit.url}" target="_blank" rel="noopener">${unit.unit}</a></div><div class="card-bldg-hint">${b.name}</div></td>
@@ -1483,7 +932,7 @@
           <a class="ext-link" href="${b.strataBase}" target="_blank" rel="noopener">strata.ca &#8599;</a>
         </div>
       </td>
-      <td class="price">${unit.price !== null ? "$" + unit.price.toLocaleString("en-US") : "-"}</td>
+      <td class="price">${unit.price !== null ? '$' + unit.price.toLocaleString('en-US') : '-'}</td>
       <td class="type-cell">${bedsLabel(unit.beds)}, ${unit.baths} bath${facingEl}</td>
       <td>${parkingBadge(unit.parking)}</td>
       <td>${gymBadge(b.gym)}</td>
@@ -1492,59 +941,59 @@
       <td>${badge(unit.status.text, unit.status.color)}</td>
       <td class="notes">${unit.notes}</td>
     </tr>`;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('units-body');
+  let html = '';
+  let rankCounter = 0;
+  // Track how many non-lost units have appeared in the active section
+  // to automatically highlight the top 5 by score
+  let activeNonLostCount = 0;
+
+  for (const section of SECTIONS) {
+    const units = UNITS.filter(u => u.section === section.id);
+    if (!units.length) continue;
+
+    // Sort: non-lost first by score desc, then lost by score desc; null scores last
+    units.sort((a, b) => {
+      if (a.lost !== b.lost) return a.lost ? 1 : -1;
+      const sa = calcScore(a) ?? -Infinity;
+      const sb = calcScore(b) ?? -Infinity;
+      return sb - sa;
+    });
+
+    html += `<tr class="section-header"><td colspan="12">${section.label}</td></tr>`;
+
+    for (const unit of units) {
+      if (section.id !== 'no-offer') rankCounter++;
+      let isTop5 = false;
+      if (section.id === 'active' && !unit.lost) {
+        activeNonLostCount++;
+        isTop5 = activeNonLostCount <= 5;
       }
+      html += renderRow(unit, rankCounter, isTop5);
+    }
+  }
 
-      function renderTable() {
-        const tbody = document.getElementById("units-body");
-        let html = "";
-        let rankCounter = 0;
-        // Track how many non-lost units have appeared in the active section
-        // to automatically highlight the top 5 by score
-        let activeNonLostCount = 0;
+  tbody.innerHTML = html;
+}
 
-        for (const section of SECTIONS) {
-          const units = UNITS.filter((u) => u.section === section.id);
-          if (!units.length) continue;
+renderTable();
 
-          // Sort: non-lost first by score desc, then lost by score desc; null scores last
-          units.sort((a, b) => {
-            if (a.lost !== b.lost) return a.lost ? 1 : -1;
-            const sa = calcScore(a) ?? -Infinity;
-            const sb = calcScore(b) ?? -Infinity;
-            return sb - sa;
-          });
-
-          html += `<tr class="section-header"><td colspan="12">${section.label}</td></tr>`;
-
-          for (const unit of units) {
-            if (section.id !== "no-offer") rankCounter++;
-            let isTop5 = false;
-            if (section.id === "active" && !unit.lost) {
-              activeNonLostCount++;
-              isTop5 = activeNonLostCount <= 5;
-            }
-            html += renderRow(unit, rankCounter, isTop5);
-          }
-        }
-
-        tbody.innerHTML = html;
-      }
-
-      renderTable();
-
-      // ─────────────────────────────────────────────
-      //  MOBILE CARD EXPAND / COLLAPSE
-      // ─────────────────────────────────────────────
-      (function () {
-        const tbody = document.getElementById("units-body");
-        tbody.addEventListener("click", function (e) {
-          // Let link clicks navigate normally
-          if (e.target.closest("a")) return;
-          const row = e.target.closest("tr");
-          if (!row || row.classList.contains("section-header")) return;
-          row.classList.toggle("expanded");
-        });
-      })();
-    </script>
-  </body>
+// ─────────────────────────────────────────────
+//  MOBILE CARD EXPAND / COLLAPSE
+// ─────────────────────────────────────────────
+(function () {
+  const tbody = document.getElementById('units-body');
+  tbody.addEventListener('click', function (e) {
+    // Let link clicks navigate normally
+    if (e.target.closest('a')) return;
+    const row = e.target.closest('tr');
+    if (!row || row.classList.contains('section-header')) return;
+    row.classList.toggle('expanded');
+  });
+})();
+</script>
+</body>
 </html>
