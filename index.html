@@ -341,16 +341,36 @@
     .score-low { color: #D97706; }
     .score-na  { color: #9B9A95; font-weight: 400; font-size: 12px; }
 
-    /* Tracking checkboxes */
-    .track-cb {
-      width: 16px;
-      height: 16px;
+    /* Pipeline steps */
+    .pipeline-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 108px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: #3A3935;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .pipeline-step input {
+      width: 13px;
+      height: 13px;
       cursor: pointer;
       accent-color: #1D9E75;
+      flex-shrink: 0;
+    }
+    .pipeline-step.step-locked {
+      opacity: 0.3;
+      pointer-events: none;
     }
     .track-cb:disabled {
       cursor: default;
-      opacity: 0.3;
     }
 
     /* Legend */
@@ -573,6 +593,11 @@
     <div class="tracker-title">Offer pipeline</div>
     <div class="tracker-row">
       <div class="tracker-stat">
+        <div class="num" id="t-interested">-</div>
+        <div class="label">Interested</div>
+        <div class="pipeline-list" id="t-interested-list"></div>
+      </div>
+      <div class="tracker-stat">
         <div class="num" id="t-apps">-</div>
         <div class="label">Applications<br>sent</div>
         <div class="pipeline-list" id="t-apps-list"></div>
@@ -630,9 +655,8 @@
           <th>Gym</th>
           <th>Pool</th>
           <th>Viewed</th>
-          <th>Offer status</th>
-          <th>App sent</th>
-          <th>Offer sent</th>
+          <th>Status</th>
+          <th>Pipeline</th>
           <th>Notes</th>
         </tr>
       </thead>
@@ -1117,19 +1141,67 @@ function setTracked(key, checked) {
   }
 }
 
-function syncCheckboxesToState() {
-  document.querySelectorAll('.track-cb').forEach(cb => {
-    if (cb.disabled) return;
-    cb.checked = !!trackingState[cb.dataset.key];
-  });
+// Map uid → unit for step sync lookups
+const UNIT_BY_UID = {};
+UNITS.forEach(u => {
+  UNIT_BY_UID[trackKey(u, '').replace(/_$/, '')] = u;
+});
+
+function unitUid(unit) {
+  return `${unit.building}_${unit.unit}`.replace(/[\s.$/\[\]#]/g, '_');
 }
 
-function trackCheckbox(unit, type) {
-  const disabled = unit.lost || unit.section === 'no-offer';
-  const checked  = !disabled && isTracked(unit, type) ? 'checked' : '';
-  const disAttr  = disabled ? 'disabled' : '';
-  const key      = trackKey(unit, type);
-  return `<input type="checkbox" class="track-cb" data-key="${key}" ${checked} ${disAttr}>`;
+// Sync all pipeline step UI states for a given unit uid
+function syncStepStates(uid) {
+  const container = document.querySelector(`.pipeline-steps[data-uid="${uid}"]`);
+  if (!container) return;
+  const unit = UNIT_BY_UID[uid];
+  if (!unit) return;
+
+  // Backward compat: if app/offer was set before 'interested' existed, treat interested as set
+  const offrDone = isTracked(unit, 'offer');
+  const appDone  = isTracked(unit, 'app') || offrDone;
+  const intDone  = isTracked(unit, 'interested') || appDone;
+
+  const setStep = (step, enabled, checked) => {
+    const cb = container.querySelector(`[data-step="${step}"]`);
+    if (!cb) return;
+    cb.disabled = !enabled;
+    cb.checked  = enabled && checked;
+    cb.closest('.pipeline-step').classList.toggle('step-locked', !enabled);
+  };
+
+  setStep('interested', true,    intDone);
+  setStep('app',        intDone, appDone);
+  setStep('offer',      appDone, offrDone);
+}
+
+function syncCheckboxesToState() {
+  document.querySelectorAll('.pipeline-steps').forEach(el => syncStepStates(el.dataset.uid));
+}
+
+function trackSteps(unit) {
+  const locked = unit.lost || unit.section === 'no-offer';
+  const uid    = unitUid(unit);
+
+  const offrDone = !locked && isTracked(unit, 'offer');
+  const appDone  = !locked && (isTracked(unit, 'app') || offrDone);
+  const intDone  = !locked && (isTracked(unit, 'interested') || appDone);
+
+  const step = (type, label, enabled, checked) => {
+    const dis = locked || !enabled;
+    const key = trackKey(unit, type);
+    return `<label class="pipeline-step${dis && !locked ? ' step-locked' : ''}">
+      <input type="checkbox" class="track-cb" data-key="${key}" data-uid="${uid}" data-step="${type}"${checked && !dis ? ' checked' : ''}${dis ? ' disabled' : ''}>
+      <span>${label}</span>
+    </label>`;
+  };
+
+  return `<div class="pipeline-steps" data-uid="${uid}">
+    ${step('interested', 'Interested', true,    intDone)}
+    ${step('app',        'App sent',   intDone, appDone)}
+    ${step('offer',      'Offer sent', appDone, offrDone)}
+  </div>`;
 }
 
 function renderRow(unit, rank, isTop5) {
@@ -1165,8 +1237,7 @@ function renderRow(unit, rank, isTop5) {
       <td>${poolBadge(b.pool)}</td>
       <td>${viewedBadge(unit.viewed)}</td>
       <td>${badge(unit.status.text, unit.status.color)}</td>
-      <td class="track-cell">${trackCheckbox(unit, 'app')}</td>
-      <td class="track-cell">${trackCheckbox(unit, 'offer')}</td>
+      <td class="track-cell">${trackSteps(unit)}</td>
       <td class="notes">${unit.notes}</td>
     </tr>`;
 }
@@ -1216,44 +1287,45 @@ renderTable();
 const OFFER_UNITS = UNITS.filter(u => u.section === 'active' && !u.lost);
 
 function updateTracker() {
-  let apps = 0;
-  let offers = 0;
-  const appsOnlyUnits = [];
-  const offersUnits = [];
+  let interested = 0, apps = 0, offers = 0;
+  const intOnlyUnits = [], appsOnlyUnits = [], offersUnits = [];
 
   for (const u of OFFER_UNITS) {
-    const appKey   = trackKey(u, 'app');
-    const offerKey = trackKey(u, 'offer');
-    const appDone   = firebaseReady ? !!trackingState[appKey]   : localStorage.getItem('rental-track-' + appKey) === '1';
-    const offerDone = firebaseReady ? !!trackingState[offerKey] : localStorage.getItem('rental-track-' + offerKey) === '1';
-    if (appDone) apps++;
-    if (offerDone) offers++;
-    if (appDone && !offerDone) appsOnlyUnits.push(u);
-    if (offerDone) offersUnits.push(u);
+    const offrDone = isTracked(u, 'offer');
+    const appDone  = isTracked(u, 'app') || offrDone;
+    const intDone  = isTracked(u, 'interested') || appDone;
+
+    if (intDone)  interested++;
+    if (appDone)  apps++;
+    if (offrDone) offers++;
+
+    if (intDone  && !appDone)  intOnlyUnits.push(u);
+    if (appDone  && !offrDone) appsOnlyUnits.push(u);
+    if (offrDone)              offersUnits.push(u);
   }
 
   const unitName = u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')';
 
-  document.getElementById('t-apps').textContent = apps;
-  document.getElementById('t-sent').textContent = offers;
+  document.getElementById('t-interested').textContent = interested;
+  document.getElementById('t-apps').textContent       = apps;
+  document.getElementById('t-sent').textContent       = offers;
 
-  // Applications list
+  const intListEl = document.getElementById('t-interested-list');
+  intListEl.innerHTML = intOnlyUnits.length
+    ? '<strong>Interested, no application yet:</strong> ' + intOnlyUnits.map(unitName).join(', ')
+    : '';
+
   const appsListEl = document.getElementById('t-apps-list');
-  if (appsOnlyUnits.length) {
-    appsListEl.innerHTML = '<strong>Application sent but no offer yet:</strong> ' + appsOnlyUnits.map(unitName).join(', ');
-  } else {
-    appsListEl.textContent = '';
-  }
+  appsListEl.innerHTML = appsOnlyUnits.length
+    ? '<strong>Application sent, no offer yet:</strong> ' + appsOnlyUnits.map(unitName).join(', ')
+    : '';
 
-  // Offers list
   const sentListEl = document.getElementById('t-sent-list');
-  if (offersUnits.length) {
-    sentListEl.innerHTML = '<strong>Offers sent in for:</strong> ' + offersUnits.map(unitName).join(', ');
-  } else {
-    sentListEl.textContent = '';
-  }
+  sentListEl.innerHTML = offersUnits.length
+    ? '<strong>Offers sent in for:</strong> ' + offersUnits.map(unitName).join(', ')
+    : '';
 
-  // Urgency based on apps sent ratio
+  // Urgency based on apps ratio
   const tracker = document.getElementById('tracker');
   const total = OFFER_UNITS.length;
   const ratio = total > 0 ? apps / total : 1;
@@ -1278,11 +1350,27 @@ updateTracker();
     row.classList.toggle('expanded');
   });
 
-  // Persist checkbox state (Firebase if configured, otherwise localStorage)
+  // Persist checkbox state and cascade step logic
   tbody.addEventListener('change', function (e) {
     if (!e.target.classList.contains('track-cb')) return;
-    setTracked(e.target.dataset.key, e.target.checked);
-    if (!firebaseReady) updateTracker(); // Firebase callback handles it when connected
+    const cb = e.target;
+    setTracked(cb.dataset.key, cb.checked);
+
+    // If unchecking a step, clear all downstream steps too
+    if (!cb.checked && cb.dataset.uid) {
+      const ORDER = ['interested', 'app', 'offer'];
+      const idx = ORDER.indexOf(cb.dataset.step);
+      const container = document.querySelector(`.pipeline-steps[data-uid="${cb.dataset.uid}"]`);
+      if (container && idx >= 0) {
+        for (let i = idx + 1; i < ORDER.length; i++) {
+          const down = container.querySelector(`[data-step="${ORDER[i]}"]`);
+          if (down) { down.checked = false; setTracked(down.dataset.key, false); }
+        }
+      }
+    }
+
+    if (cb.dataset.uid) syncStepStates(cb.dataset.uid);
+    if (!firebaseReady) updateTracker();
   });
 })();
 </script>
