@@ -34,6 +34,7 @@
     dbRef.on('value', (snap) => {
       trackingState = snap.val() || {};
       syncCheckboxesToState();
+      if (typeof updateTracker === 'function') updateTracker();
     });
   }
   </script>
@@ -73,6 +74,70 @@
       font-size: 11.5px;
       color: #9B9A95;
       margin-top: 4px;
+    }
+
+    /* Tracking counter banner */
+    .tracker {
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      border: 1px solid;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .tracker-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    .tracker-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tracker-stat {
+      flex: 1;
+      min-width: 120px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: center;
+    }
+    .tracker-stat .num {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .tracker-stat .label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+      color: inherit;
+      opacity: 0.7;
+    }
+    /* Urgency levels */
+    .tracker.urgency-crit {
+      background: #FEE2E2;
+      border-color: #F87171;
+      color: #991B1B;
+      animation: pulse-red 2s ease-in-out infinite;
+    }
+    .tracker.urgency-warn {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #854D0E;
+    }
+    .tracker.urgency-ok {
+      background: #D1FAE5;
+      border-color: #34D399;
+      color: #065F46;
+    }
+    @keyframes pulse-red {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0.5); }
+      50% { box-shadow: 0 0 16px 4px rgba(248,113,113,0.5); }
     }
 
     /* Alert callouts */
@@ -493,6 +558,25 @@
     <p>All listings &middot; Priority order &middot; Top 5 for Single Key highlighted in green</p>
     <p class="updated">Last updated: <span id="lastUpdated">25 March 2026</span></p>
   </header>
+
+  <div id="tracker" class="tracker urgency-crit">
+    <div class="tracker-title">Offer pipeline</div>
+    <div class="tracker-row">
+      <div class="tracker-stat">
+        <div class="num" id="t-offers">-</div>
+        <div class="label">Units marked<br>for offer</div>
+      </div>
+      <div class="tracker-stat">
+        <div class="num" id="t-apps">-</div>
+        <div class="label">Applications<br>sent</div>
+      </div>
+      <div class="tracker-stat">
+        <div class="num" id="t-sent">-</div>
+        <div class="label">Offers<br>sent</div>
+      </div>
+    </div>
+    <div id="tracker-msg" style="margin-top: 10px; font-size: 12px; font-weight: 500; line-height: 1.5;"></div>
+  </div>
 
   <div class="alert alert-green">
     <span>&#9733;</span>
@@ -1079,6 +1163,76 @@ function renderTable() {
 renderTable();
 
 // ─────────────────────────────────────────────
+//  OFFER PIPELINE TRACKER
+// ─────────────────────────────────────────────
+// Units where user has said "Offer" (active, non-lost only)
+const OFFER_UNITS = UNITS.filter(u =>
+  u.section === 'active' && !u.lost &&
+  u.status.text.startsWith('Offer')
+);
+
+function updateTracker() {
+  const total = OFFER_UNITS.length;
+  let apps = 0;
+  let offers = 0;
+
+  for (const u of OFFER_UNITS) {
+    const appKey  = trackKey(u, 'app');
+    const offerKey = trackKey(u, 'offer');
+    if (firebaseReady) {
+      if (trackingState[appKey])   apps++;
+      if (trackingState[offerKey]) offers++;
+    } else {
+      if (localStorage.getItem('rental-track-' + appKey) === '1')   apps++;
+      if (localStorage.getItem('rental-track-' + offerKey) === '1') offers++;
+    }
+  }
+
+  document.getElementById('t-offers').textContent = total;
+  document.getElementById('t-apps').textContent    = apps + ' / ' + total;
+  document.getElementById('t-sent').textContent    = offers + ' / ' + total;
+
+  // Urgency based on apps sent ratio
+  const tracker = document.getElementById('tracker');
+  const ratio = total > 0 ? apps / total : 1;
+  tracker.classList.remove('urgency-crit', 'urgency-warn', 'urgency-ok');
+  if (ratio <= 0.25)      tracker.classList.add('urgency-crit');
+  else if (ratio <= 0.6)  tracker.classList.add('urgency-warn');
+  else                    tracker.classList.add('urgency-ok');
+
+  // Build message
+  const msg = document.getElementById('tracker-msg');
+  const lines = [];
+  if (apps === 0 && total > 0) {
+    lines.push(`No applications sent for any of the ${total} units marked for offer. Kenan, get moving.`);
+  } else if (apps < total) {
+    const missing = OFFER_UNITS.filter(u => {
+      const k = trackKey(u, 'app');
+      return firebaseReady ? !trackingState[k] : localStorage.getItem('rental-track-' + k) !== '1';
+    });
+    const names = missing.map(u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')').join(', ');
+    lines.push(`Applications still needed for: ${names}`);
+  }
+  const noOffer = OFFER_UNITS.filter(u => {
+    const appK = trackKey(u, 'app');
+    const offK = trackKey(u, 'offer');
+    const appDone   = firebaseReady ? !!trackingState[appK]  : localStorage.getItem('rental-track-' + appK) === '1';
+    const offerDone = firebaseReady ? !!trackingState[offK] : localStorage.getItem('rental-track-' + offK) === '1';
+    return appDone && !offerDone;
+  });
+  if (noOffer.length) {
+    const names = noOffer.map(u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')').join(', ');
+    lines.push(`Application sent but no offer yet: ${names}`);
+  }
+  if (apps === total && offers === total) {
+    lines.push('All applications and offers sent. Now we wait.');
+  }
+  msg.innerHTML = lines.join('<br>');
+}
+
+updateTracker();
+
+// ─────────────────────────────────────────────
 //  MOBILE CARD EXPAND / COLLAPSE
 // ─────────────────────────────────────────────
 (function () {
@@ -1095,6 +1249,7 @@ renderTable();
   tbody.addEventListener('change', function (e) {
     if (!e.target.classList.contains('track-cb')) return;
     setTracked(e.target.dataset.key, e.target.checked);
+    if (!firebaseReady) updateTracker(); // Firebase callback handles it when connected
   });
 })();
 </script>
