@@ -387,10 +387,10 @@
       <table>
         <tr><th>Component</th><th>Values</th></tr>
         <tr><td>Gym</td><td>0 = no gym &nbsp;|&nbsp; 1 = basic &nbsp;|&nbsp; 2 = good &nbsp;|&nbsp; 3 = excellent</td></tr>
-        <tr><td>Pool</td><td>0 = none &nbsp;|&nbsp; 1 = yes</td></tr>
+        <tr><td>Pool</td><td>0 = none or outdoor &nbsp;|&nbsp; 1 = indoor + outdoor</td></tr>
         <tr><td>Sauna</td><td>0 = none &nbsp;|&nbsp; 1 = yes &nbsp;(Line 5 buildings only)</td></tr>
         <tr><td>Price</td><td>3.0 at &le;$2,100 &nbsp;|&nbsp; &minus;0.1 per $50 above &nbsp;(formula: 3.0 &minus; floor((price &minus; 2100) / 50) &times; 0.1)</td></tr>
-        <tr><td>Parking</td><td>0 = none &nbsp;|&nbsp; 1 = included</td></tr>
+        <tr><td>Parking</td><td>0 = none or rentable &nbsp;|&nbsp; 1 = included</td></tr>
         <tr><td>Facing</td><td>S = 1.0 &nbsp;|&nbsp; SE/SW = 0.75 &nbsp;|&nbsp; E/W = 0.5 &nbsp;|&nbsp; NE/NW = 0.25 &nbsp;|&nbsp; N = 0</td></tr>
         <tr><td>Bath</td><td>1 bath = 1.0 &nbsp;|&nbsp; 2 bath = 2.0</td></tr>
         <tr><td>Balcony</td><td>0 = none &nbsp;|&nbsp; 1 = 0.5 &nbsp;|&nbsp; 2+ = 1.0</td></tr>
@@ -419,507 +419,7 @@
           <th>Notes</th>
         </tr>
       </thead>
-      <tbody>
-
-        <!-- ─── LOST ─── -->
-        <tr class="section-header"><td colspan="12">Lost</td></tr>
-
-        <tr class="lost">
-          <td><span class="rank">1</span></td>
-          <td class="score"><span class="score-hi">10.3</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1010" target="_blank" rel="noopener">1010 S</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,200</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-gray" style="margin-top:3px">East</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-red">Lost</span></td>
-          <td class="notes">Light colour scheme. The ideal unit. Lost to another applicant.</td>
-        </tr>
-
-        <!-- ─── ACTIVE TOP 5 ─── -->
-        <tr class="section-header"><td colspan="12">Top 5 - Single Key priority</td></tr>
-
-        <tr class="top5">
-          <td><span class="rank active">2</span></td>
-          <td class="score"><span class="score-hi">11.25</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave/unit-1805" target="_blank" rel="noopener">1805</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,850</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-green" style="margin-top:3px">SE</span></td>
-          <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Two balconies, SE-facing, lots of light. Parking + locker included. Higher floor than 1105.</td>
-        </tr>
-
-        <tr class="top5">
-          <td><span class="rank active">3</span></td>
-          <td class="score"><span class="score-hi">10.8</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2710" target="_blank" rel="noopener">2710 S</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,249</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-gray" style="margin-top:3px">East</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer - no viewing</span></td>
-          <td class="notes">Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.</td>
-        </tr>
-
-        <tr class="top5">
-          <td><span class="rank active">4</span></td>
-          <td class="score"><span class="score-hi">10.8</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2210" target="_blank" rel="noopener">2210</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,200</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-gray" style="margin-top:3px">East</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer - no viewing</span></td>
-          <td class="notes">Same layout as 1010. Colour scheme unknown - if light, better than 2710 S (same spec, cheaper). Landlord went silent on Kenan - looking unlikely unless SingleKey screening changes his mind.</td>
-        </tr>
-
-        <tr class="top5">
-          <td><span class="rank active">5</span></td>
-          <td class="score"><span class="score-hi">10.0</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3111" target="_blank" rel="noopener">3111</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,100</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-gray" style="margin-top:3px">West</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-gray">Possibly</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Very high floor. Same layout as 1010, 2710, 2210. Likely dark colour scheme like 2710. Glass door separates den from kitchen. West-facing unobstructed balcony.</td>
-        </tr>
-
-        <tr class="top5">
-          <td><span class="rank active">6</span></td>
-          <td class="score"><span class="score-mid">9.75</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3103" target="_blank" rel="noopener">3103</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,100</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-amber" style="margin-top:3px">NW</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Massive den on right as you enter - open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.</td>
-        </tr>
-
-        <!-- ─── UNDER CONSIDERATION ─── -->
-        <tr class="section-header"><td colspan="12">Under consideration</td></tr>
-
-        <tr>
-          <td><span class="rank">7</span></td>
-          <td class="score"><span class="score-hi">11.55</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave/unit-1105" target="_blank" rel="noopener">1105</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,950</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-blue" style="margin-top:3px">SE</span></td>
-          <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Large 817 sqft with two balconies. Big windows. Parking + locker included. Ideally want 1-bed + den first.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">8</span></td>
-          <td class="score"><span class="score-hi">11.05</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1912" target="_blank" rel="noopener">1912</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">110 Broadway (Untitled North)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,950</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-blue" style="margin-top:3px">SE</span></td>
-          <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Corner suite, 600 sqft, two balconies, SE facing. Parking included. Expensive relative to spec.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">9</span></td>
-          <td class="score"><span class="score-hi">10.95</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-2211" target="_blank" rel="noopener">2211</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$3,000</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-blue" style="margin-top:3px">SE</span></td>
-          <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer - no viewing</span></td>
-          <td class="notes">741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">10</span></td>
-          <td class="score"><span class="score-hi">10.25</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/mls/c12811576" target="_blank" rel="noopener">810N</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,850</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-blue" style="margin-top:3px">SE</span></td>
-          <td><span class="badge b-green">Yes (incl.)</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer - no viewing</span></td>
-          <td class="notes">756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">11</span></td>
-          <td class="score"><span class="score-hi">10.1</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave/unit-2414" target="_blank" rel="noopener">2414</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,575</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-gray" style="margin-top:3px">West</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-amber">Offer</span></td>
-          <td class="notes">Good price for 2 bed. Corner den may serve as second room per listing. No parking.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">12</span></td>
-          <td class="score"><span class="score-mid">9.8</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-706" target="_blank" rel="noopener">706</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,499</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-gray" style="margin-top:3px">East</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-gray">Considering</span></td>
-          <td class="notes">E-facing, 700-799 sqft, locker included. 172 days on market - landlord likely motivated to deal. Sauna confirmed. Low floor.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">13</span></td>
-          <td class="score"><span class="score-mid">9.75</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1505" target="_blank" rel="noopener">1505</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">127 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,350</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-amber" style="margin-top:3px">NE</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-gray">Considering</span></td>
-          <td class="notes">NE-facing, 600-699 sqft. No parking. Second bedroom is den-like per listing. $2,350.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">14</span></td>
-          <td class="score"><span class="score-mid">9.65</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2309" target="_blank" rel="noopener">2309</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">127 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,650</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-amber" style="margin-top:3px">NE</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-gray">Considering</span></td>
-          <td class="notes">NE-facing, 600-699 sqft. No parking. Most expensive of the Line 5 batch at $2,650.</td>
-        </tr>
-
-        <tr class="lost">
-          <td><span class="rank">15</span></td>
-          <td class="score"><span class="score-mid">8.9</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1707" target="_blank" rel="noopener">1707</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">127 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,400</td>
-          <td class="type-cell">2 bed, 2 bath<br><span class="badge b-red" style="margin-top:3px">North</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-red">Leased - gone</span></td>
-          <td class="notes">N-facing. Details MLS-restricted. No parking confirmed. $2,400.</td>
-        </tr>
-
-        <!-- ─── FALLBACKS ─── -->
-        <tr class="section-header"><td colspan="12">Fallbacks</td></tr>
-
-        <tr>
-          <td><span class="rank">17</span></td>
-          <td class="score"><span class="score-mid">9.2</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/39-roehampton-e2-condos/unit-602" target="_blank" rel="noopener">602</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://e2condos.ca/" target="_blank" rel="noopener">39 Roehampton (E2 Condos)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://e2condos.ca/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/39-roehampton-e2-condos" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,250</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-gray" style="margin-top:3px">East</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Extensive</span></td>
-          <td><span class="badge b-red">No pool</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-blue">Primary fallback</span></td>
-          <td class="notes">Most likely choice if Broadway falls through. Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines - best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). No pool confirmed. Parking not included - rentable separately. Agent aware of single key screening - looking into it. Low counter space - island needed.</td>
-        </tr>
-
-        <tr>
-          <td><span class="rank">18</span></td>
-          <td class="score"><span class="score-mid">7.5</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-2705" target="_blank" rel="noopener">2705</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">2161 Yonge / 20 Soudan (Y&amp;S Condos)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,600</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-green" style="margin-top:3px">South</span></td>
-          <td><span class="badge b-green">Yes</span></td>
-          <td><span class="badge b-amber">Subpar</span></td>
-          <td><span class="badge b-red">No pool</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-purple">Desperate fallback only</span></td>
-          <td class="notes">Same layout as 1805 - not viewed, not needed. Floor 27, better view than 1805. Parking included but likely priced in - effectively ~$500 more than 1805 just for parking, making it even worse value than the options above. Same caveats: no pool, subpar gym, marble aesthetic, under construction. SingleKey screening confirmed for building. Last resort only.</td>
-        </tr>
-
-        <tr class="lost">
-          <td><span class="rank">19</span></td>
-          <td class="score"><span class="score-mid">7.0</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-1805" target="_blank" rel="noopener">1805</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">2161 Yonge / 20 Soudan (Y&amp;S Condos)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://www.tributecommunities.com/y_s/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,100</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-green" style="margin-top:3px">South</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-amber">Subpar</span></td>
-          <td><span class="badge b-red">No pool</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-red">Leased - gone</span></td>
-          <td class="notes">Den is a closed room - good for office but very cramped. South-facing with good views, some obstruction. $2,100 for 1 bed+den/1 bath, no pool, subpar gym, parking rentable separately - not good value in comparison to the ones above. Marble aesthetic, under construction. Good kitchen counter space. Weird living room nook. Agent confirmed they use SingleKey to screen tenants. Last resort only.</td>
-        </tr>
-
-        <!-- ─── NO OFFER ─── -->
-        <tr class="section-header"><td colspan="12">Viewed - no offer</td></tr>
-
-        <tr class="no-offer">
-          <td><span class="rank">-</span></td>
-          <td class="score"><span class="score-hi">10.4</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave/unit-1814" target="_blank" rel="noopener">1814</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,150</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-red" style="margin-top:3px">North</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">Tiny living room - sofa collides with balcony door. Poor space utilisation.</td>
-        </tr>
-
-        <tr class="no-offer">
-          <td><span class="rank">-</span></td>
-          <td class="score"><span class="score-hi">10.1</span></td>
-          <td><div class="unit"><a href="https://strata.ca/toronto/120-broadway-ave/unit-712" target="_blank" rel="noopener">712</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">120 Broadway (Untitled South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://untitledtorontocondo.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/120-broadway-ave" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,300</td>
-          <td class="type-cell">1 bed + den, 2 bath<br><span class="badge b-gray" style="margin-top:3px">West</span></td>
-          <td><span class="badge b-amber">Rentable separately</span></td>
-          <td><span class="badge b-blue">Yes (extensive)</span></td>
-          <td><span class="badge b-green">Yes (indoor + outdoor)</span></td>
-          <td><span class="badge b-blue">Yes</span></td>
-          <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">No room for sofa without facing a wall. Small kitchen. Minimal den space.</td>
-        </tr>
-
-        <tr class="no-offer">
-          <td><span class="rank">-</span></td>
-          <td class="score"><span class="score-na">N/A</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-3404" target="_blank" rel="noopener">3404</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">-</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-green" style="margin-top:3px">South</span></td>
-          <td><span class="badge b-gray">Unknown</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">Not viewed - rejected from listing. Den pushed into right corner by entrance, no natural light, looks like storage. Unit is a no. Building itself is good - gym has machines and a large yoga studio, plus sauna, steam room, spa, and jacuzzi. Many units available here worth checking. Same location as Broadway.</td>
-        </tr>
-
-        <tr class="no-offer">
-          <td><span class="rank">-</span></td>
-          <td class="score"><span class="score-hi">10.0</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2004" target="_blank" rel="noopener">2004</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">117 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">$2,100</td>
-          <td class="type-cell">1 bed + den, 1 bath<br><span class="badge b-green" style="margin-top:3px">South</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-amber">Outdoor only</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">S-facing, 500-599 sqft. No parking. Best price in the Line 5 batch at $2,100. Good value score but no offer made - too small.</td>
-        </tr>
-
-        <tr class="no-offer">
-          <td><span class="rank">-</span></td>
-          <td class="score"><span class="score-na">N/A</span></td>
-          <td><div class="unit"><a href="https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2106" target="_blank" rel="noopener">2106</a></div></td>
-          <td>
-            <div class="building-name"><a href="https://line5condos.com/" target="_blank" rel="noopener">127 Broadway (Line 5 South)</a></div>
-            <div class="building-links">
-              <a class="ext-link" href="https://line5condos.com/" target="_blank" rel="noopener">Official site ↗</a>
-              <a class="ext-link" href="https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower" target="_blank" rel="noopener">strata.ca ↗</a>
-            </div>
-          </td>
-          <td class="price">-</td>
-          <td class="type-cell">1 bed, 1 bath</td>
-          <td><span class="badge b-gray">Unknown</span></td>
-          <td><span class="badge b-green">Yes (good)</span></td>
-          <td><span class="badge b-red">No pool</span></td>
-          <td><span class="badge b-red">No</span></td>
-          <td><span class="badge b-red">No offer</span></td>
-          <td class="notes">Already leased - 19 days on market. Price MLS-restricted. 1 bed/1 bath only. No pool listed in unit amenities. Sauna confirmed.</td>
-        </tr>
-
-      </tbody>
+      <tbody id="units-body"></tbody>
     </table>
   </div>
 
@@ -935,5 +435,478 @@
   </div>
 
 </div>
+
+<script>
+// ─────────────────────────────────────────────
+//  BUILDINGS
+//  gym: 0=none, 1=basic, 2=good, 3=excellent
+//  pool: 'indoor+outdoor' | 'outdoor' | 'none'
+//  sauna: true/false
+// ─────────────────────────────────────────────
+const BUILDINGS = {
+  '110B': {
+    name: '110 Broadway (Untitled North)',
+    officialSite: 'https://untitledtorontocondo.com/',
+    strataBase:   'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower',
+    gym: 3, pool: 'indoor+outdoor', sauna: false,
+  },
+  '120B': {
+    name: '120 Broadway (Untitled South)',
+    officialSite: 'https://untitledtorontocondo.com/',
+    strataBase:   'https://strata.ca/toronto/120-broadway-ave',
+    gym: 3, pool: 'indoor+outdoor', sauna: false,
+  },
+  'L5-117': {
+    name: '117 Broadway (Line 5 South)',
+    officialSite: 'https://line5condos.com/',
+    strataBase:   'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower',
+    gym: 2, pool: 'outdoor', sauna: true,
+  },
+  'L5-127': {
+    name: '127 Broadway (Line 5 South)',
+    officialSite: 'https://line5condos.com/',
+    strataBase:   'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower',
+    gym: 2, pool: 'outdoor', sauna: true,
+  },
+  'E2': {
+    name: '39 Roehampton (E2 Condos)',
+    officialSite: 'https://e2condos.ca/',
+    strataBase:   'https://strata.ca/toronto/39-roehampton-e2-condos',
+    gym: 3, pool: 'none', sauna: false,
+  },
+  'YS': {
+    name: '2161 Yonge / 20 Soudan (Y&amp;S Condos)',
+    officialSite: 'https://www.tributecommunities.com/y_s/',
+    strataBase:   'https://strata.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos',
+    gym: 1, pool: 'none', sauna: false,
+  },
+};
+
+// ─────────────────────────────────────────────
+//  UNITS
+//
+//  section:   'lost' | 'top5' | 'consideration' | 'fallbacks' | 'no-offer'
+//  lost:      true if leased/lost (dims the row)
+//  url:       unit-specific listing URL
+//  price:     monthly rent in CAD, or null if unknown
+//  beds:      1 | 2 | '1+den'
+//  baths:     1 | 2
+//  facing:    'S'|'SE'|'SW'|'E'|'W'|'NE'|'NW'|'N' or null
+//  parking:   'included' | 'rentable' | 'none' | 'unknown'
+//  balconies: 0 | 1 | 2  (null = unknown, treated as 0)
+//  sqft:      actual sqft number, or null (unknown, scored as 0)
+//  floor:     floor number (integer)
+//  viewed:    true | false | 'possibly'
+//  status:    { text: string, color: 'green'|'blue'|'amber'|'gray'|'red'|'purple' }
+//  notes:     HTML string (use &rsquo; for apostrophes, &amp; for &)
+// ─────────────────────────────────────────────
+const UNITS = [
+
+  // ── LOST ──────────────────────────────────────────────────────────────────
+  {
+    section: 'lost', lost: true,
+    unit: '1010 S', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1010',
+    price: 2200, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 10,
+    viewed: true,
+    status: { text: 'Lost', color: 'red' },
+    notes: 'Light colour scheme. The ideal unit. Lost to another applicant.',
+  },
+
+  // ── TOP 5 ─────────────────────────────────────────────────────────────────
+  {
+    section: 'top5', lost: false,
+    unit: '1805', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1805',
+    price: 2850, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 650, floor: 18,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Two balconies, SE-facing, lots of light. Parking + locker included. Higher floor than 1105.',
+  },
+  {
+    section: 'top5', lost: false,
+    unit: '2710 S', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2710',
+    price: 2249, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 27,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.',
+  },
+  {
+    section: 'top5', lost: false,
+    unit: '2210', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2210',
+    price: 2200, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 22,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: 'Same layout as 1010. Colour scheme unknown - if light, better than 2710 S (same spec, cheaper). Landlord went silent on Kenan - looking unlikely unless SingleKey screening changes his mind.',
+  },
+  {
+    section: 'top5', lost: false,
+    unit: '3111', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3111',
+    price: 2100, beds: '1+den', baths: 1, facing: 'W',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 31,
+    viewed: 'possibly',
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Very high floor. Same layout as 1010, 2710, 2210. Likely dark colour scheme like 2710. Glass door separates den from kitchen. West-facing unobstructed balcony.',
+  },
+  {
+    section: 'top5', lost: false,
+    unit: '3103', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3103',
+    price: 2100, beds: '1+den', baths: 1, facing: 'NW',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 31,
+    viewed: true,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Massive den on right as you enter - open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.',
+  },
+
+  // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
+  {
+    section: 'consideration', lost: false,
+    unit: '1105', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1105',
+    price: 2950, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 817, floor: 11,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Large 817 sqft with two balconies. Big windows. Parking + locker included. Ideally want 1-bed + den first.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '1912', building: '110B',
+    url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1912',
+    price: 2950, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 600, floor: 19,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Corner suite, 600 sqft, two balconies, SE facing. Parking included. Expensive relative to spec.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '2211', building: 'L5-117',
+    url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-2211',
+    price: 3000, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 741, floor: 22,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: '741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '810N', building: 'L5-117',
+    url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/mls/c12811576',
+    price: 2850, beds: 2, baths: 2, facing: 'SE',
+    parking: 'included', balconies: 2, sqft: 756, floor: 8,
+    viewed: false,
+    status: { text: 'Offer - no viewing', color: 'amber' },
+    notes: '756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '2414', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-2414',
+    price: 2575, beds: 2, baths: 2, facing: 'W',
+    parking: 'none', balconies: 1, sqft: null, floor: 24,
+    viewed: false,
+    status: { text: 'Offer', color: 'amber' },
+    notes: 'Good price for 2 bed. Corner den may serve as second room per listing. No parking.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '706', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-706',
+    price: 2499, beds: 2, baths: 2, facing: 'E',
+    parking: 'none', balconies: 2, sqft: 700, floor: 7,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'E-facing, 700-799 sqft, locker included. 172 days on market - landlord likely motivated to deal. Sauna confirmed. Low floor.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '1505', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1505',
+    price: 2350, beds: 2, baths: 2, facing: 'NE',
+    parking: 'none', balconies: 2, sqft: 600, floor: 15,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'NE-facing, 600-699 sqft. No parking. Second bedroom is den-like per listing. $2,350.',
+  },
+  {
+    section: 'consideration', lost: false,
+    unit: '2309', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2309',
+    price: 2650, beds: 2, baths: 2, facing: 'NE',
+    parking: 'none', balconies: 2, sqft: 600, floor: 23,
+    viewed: false,
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'NE-facing, 600-699 sqft. No parking. Most expensive of the Line 5 batch at $2,650.',
+  },
+  {
+    section: 'consideration', lost: true,
+    unit: '1707', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1707',
+    price: 2400, beds: 2, baths: 2, facing: 'N',
+    parking: 'none', balconies: 2, sqft: null, floor: 17,
+    viewed: false,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: 'N-facing. Details MLS-restricted. No parking confirmed. $2,400.',
+  },
+  {
+    section: 'consideration', lost: true,
+    unit: '2811', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2811',
+    price: 2200, beds: 1, baths: 1, facing: 'NE',
+    parking: 'none', balconies: 1, sqft: null, floor: 28,
+    viewed: false,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: '1 bed/1 bath, NE-facing. High floor. No parking. Leased before offer made.',
+  },
+
+  // ── FALLBACKS ─────────────────────────────────────────────────────────────
+  {
+    section: 'fallbacks', lost: false,
+    unit: '602', building: 'E2',
+    url: 'https://condoexchange.ca/toronto/39-roehampton-e2-condos/unit-602',
+    price: 2250, beds: '1+den', baths: 2, facing: 'E',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 6,
+    viewed: true,
+    status: { text: 'Primary fallback', color: 'blue' },
+    notes: 'Most likely choice if Broadway falls through. Favourite from viewings. Corner den with sliding glass doors. Good modern bathrooms. Gym has punching bag + machines - best gym after 110/120 Broadway. Also has climbing wall and trampoline (possibly kids&rsquo; area). No pool confirmed. Parking not included - rentable separately. Agent aware of single key screening - looking into it. Low counter space - island needed.',
+  },
+  {
+    section: 'fallbacks', lost: false,
+    unit: '2705', building: 'YS',
+    url: 'https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-2705',
+    price: 2600, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'included', balconies: 1, sqft: null, floor: 27,
+    viewed: false,
+    status: { text: 'Desperate fallback only', color: 'purple' },
+    notes: 'Same layout as 1805 - not viewed, not needed. Floor 27, better view than 1805. Parking included but likely priced in - effectively ~$500 more than 1805 just for parking, making it even worse value than the options above. Same caveats: no pool, subpar gym, marble aesthetic, under construction. SingleKey screening confirmed for building. Last resort only.',
+  },
+  {
+    section: 'fallbacks', lost: true,
+    unit: '1805', building: 'YS',
+    url: 'https://condoexchange.ca/toronto/2161-yonge-street-and-20-soudan-avenue-yands-condos/2-unit-1805',
+    price: 2100, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'rentable', balconies: 1, sqft: null, floor: 18,
+    viewed: true,
+    status: { text: 'Leased - gone', color: 'red' },
+    notes: 'Den is a closed room - good for office but very cramped. South-facing with good views, some obstruction. $2,100 for 1 bed+den/1 bath, no pool, subpar gym, parking rentable separately - not good value in comparison to the ones above. Marble aesthetic, under construction. Good kitchen counter space. Weird living room nook. Agent confirmed they use SingleKey to screen tenants. Last resort only.',
+  },
+
+  // ── VIEWED - NO OFFER ─────────────────────────────────────────────────────
+  {
+    section: 'no-offer', lost: false,
+    unit: '1814', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-1814',
+    price: 2150, beds: '1+den', baths: 2, facing: 'N',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 18,
+    viewed: true,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Tiny living room - sofa collides with balcony door. Poor space utilisation.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '712', building: '120B',
+    url: 'https://strata.ca/toronto/120-broadway-ave/unit-712',
+    price: 2300, beds: '1+den', baths: 2, facing: 'W',
+    parking: 'rentable', balconies: 1, sqft: 650, floor: 7,
+    viewed: true,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'No room for sofa without facing a wall. Small kitchen. Minimal den space.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '3404', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-3404',
+    price: null, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'unknown', balconies: null, sqft: null, floor: 34,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Not viewed - rejected from listing. Den pushed into right corner by entrance, no natural light, looks like storage. Unit is a no. Building itself is good - gym has machines and a large yoga studio, plus sauna, steam room, spa, and jacuzzi. Many units available here worth checking. Same location as Broadway.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '2004', building: 'L5-117',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2004',
+    price: 2100, beds: '1+den', baths: 1, facing: 'S',
+    parking: 'none', balconies: 2, sqft: 500, floor: 20,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'S-facing, 500-599 sqft. No parking. Best price in the Line 5 batch at $2,100. Good value score but no offer made - too small.',
+  },
+  {
+    section: 'no-offer', lost: false,
+    unit: '2106', building: 'L5-127',
+    url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2106',
+    price: null, beds: 1, baths: 1, facing: null,
+    parking: 'unknown', balconies: null, sqft: null, floor: 21,
+    viewed: false,
+    status: { text: 'No offer', color: 'red' },
+    notes: 'Already leased - 19 days on market. Price MLS-restricted. 1 bed/1 bath only. No pool listed in unit amenities. Sauna confirmed.',
+  },
+];
+
+// ─────────────────────────────────────────────
+//  SCORE FORMULA
+// ─────────────────────────────────────────────
+const FACING_SCORE = { S: 1.0, SE: 0.75, SW: 0.75, E: 0.5, W: 0.5, NE: 0.25, NW: 0.25, N: 0 };
+const FACING_COLOR = { S: 'green', SE: 'blue', SW: 'blue', E: 'gray', W: 'gray', NE: 'amber', NW: 'amber', N: 'red' };
+
+function calcScore(unit) {
+  if (unit.price === null) return null;
+  const b = BUILDINGS[unit.building];
+  const gym      = b.gym;
+  const pool     = b.pool === 'indoor+outdoor' ? 1 : 0;
+  const sauna    = b.sauna ? 1 : 0;
+  const price    = unit.price <= 2100
+                     ? 3.0
+                     : Math.max(0, 3.0 - Math.floor((unit.price - 2100) / 50) * 0.1);
+  const parking  = unit.parking === 'included' ? 1 : 0;
+  const facing   = unit.facing !== null ? (FACING_SCORE[unit.facing] ?? 0) : 0;
+  const bath     = unit.baths;
+  const balcony  = (unit.balconies ?? 0) === 0 ? 0 : unit.balconies === 1 ? 0.5 : 1.0;
+  const sqft     = unit.sqft === null ? 0 : unit.sqft < 600 ? 0 : unit.sqft < 700 ? 0.5 : 1.0;
+  const floor    = unit.floor < 10 ? 0 : unit.floor < 20 ? 0.5 : 1.0;
+  const total    = gym + pool + sauna + price + parking + facing + bath + balcony + sqft + floor;
+  return Math.round(total * 100) / 100;
+}
+
+function fmtScore(s) {
+  if (s === null) return 'N/A';
+  const s1 = s.toFixed(1);
+  return parseFloat(s1) === s ? s1 : s.toFixed(2);
+}
+
+function scoreClass(s) {
+  if (s === null) return 'score-na';
+  if (s >= 10)   return 'score-hi';
+  if (s >= 7)    return 'score-mid';
+  return 'score-low';
+}
+
+// ─────────────────────────────────────────────
+//  BADGE HELPERS
+// ─────────────────────────────────────────────
+function badge(text, color) {
+  return `<span class="badge b-${color}">${text}</span>`;
+}
+
+function gymBadge(level) {
+  if (level >= 3) return badge('Yes (extensive)', 'blue');
+  if (level === 2) return badge('Yes (good)', 'green');
+  if (level === 1) return badge('Subpar', 'amber');
+  return badge('No gym', 'red');
+}
+
+function poolBadge(pool) {
+  if (pool === 'indoor+outdoor') return badge('Yes (indoor + outdoor)', 'green');
+  if (pool === 'outdoor')        return badge('Outdoor only', 'amber');
+  return badge('No pool', 'red');
+}
+
+function parkingBadge(p) {
+  if (p === 'included') return badge('Yes (incl.)', 'green');
+  if (p === 'rentable') return badge('Rentable separately', 'amber');
+  if (p === 'unknown')  return badge('Unknown', 'gray');
+  return badge('No', 'red');
+}
+
+function viewedBadge(v) {
+  if (v === true)       return badge('Yes', 'blue');
+  if (v === 'possibly') return badge('Possibly', 'gray');
+  return badge('No', 'red');
+}
+
+function bedsLabel(b) {
+  if (b === '1+den') return '1 bed + den';
+  return b + ' bed';
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+const SECTIONS = [
+  { id: 'lost',          label: 'Lost' },
+  { id: 'top5',          label: 'Top 5 - Single Key priority' },
+  { id: 'consideration', label: 'Under consideration' },
+  { id: 'fallbacks',     label: 'Fallbacks' },
+  { id: 'no-offer',      label: 'Viewed - no offer' },
+];
+
+function renderRow(unit, rank) {
+  const b       = BUILDINGS[unit.building];
+  const s       = calcScore(unit);
+  const sCls    = scoreClass(s);
+  const sStr    = fmtScore(s);
+  const isTop5  = unit.section === 'top5';
+  const isNO    = unit.section === 'no-offer';
+  const rowCls  = isTop5 ? 'top5' : (unit.lost ? 'lost' : (isNO ? 'no-offer' : ''));
+  const rankEl  = isNO
+    ? '<span class="rank">-</span>'
+    : `<span class="rank${isTop5 ? ' active' : ''}">${rank}</span>`;
+  const facingEl = unit.facing
+    ? `<br><span class="badge b-${FACING_COLOR[unit.facing]}" style="margin-top:3px">${unit.facing}</span>`
+    : '';
+
+  return `
+    <tr${rowCls ? ` class="${rowCls}"` : ''}>
+      <td>${rankEl}</td>
+      <td class="score"><span class="${sCls}">${sStr}</span></td>
+      <td><div class="unit"><a href="${unit.url}" target="_blank" rel="noopener">${unit.unit}</a></div></td>
+      <td>
+        <div class="building-name"><a href="${b.officialSite}" target="_blank" rel="noopener">${b.name}</a></div>
+        <div class="building-links">
+          <a class="ext-link" href="${b.officialSite}" target="_blank" rel="noopener">Official site &#8599;</a>
+          <a class="ext-link" href="${b.strataBase}" target="_blank" rel="noopener">strata.ca &#8599;</a>
+        </div>
+      </td>
+      <td class="price">${unit.price !== null ? '$' + unit.price.toLocaleString('en-US') : '-'}</td>
+      <td class="type-cell">${bedsLabel(unit.beds)}, ${unit.baths} bath${facingEl}</td>
+      <td>${parkingBadge(unit.parking)}</td>
+      <td>${gymBadge(b.gym)}</td>
+      <td>${poolBadge(b.pool)}</td>
+      <td>${viewedBadge(unit.viewed)}</td>
+      <td>${badge(unit.status.text, unit.status.color)}</td>
+      <td class="notes">${unit.notes}</td>
+    </tr>`;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('units-body');
+  let html = '';
+  let rankCounter = 0;
+
+  for (const section of SECTIONS) {
+    const units = UNITS.filter(u => u.section === section.id);
+    if (!units.length) continue;
+
+    // Sort: non-lost first by score desc, then lost by score desc; null scores last
+    units.sort((a, b) => {
+      if (a.lost !== b.lost) return a.lost ? 1 : -1;
+      const sa = calcScore(a) ?? -Infinity;
+      const sb = calcScore(b) ?? -Infinity;
+      return sb - sa;
+    });
+
+    html += `<tr class="section-header"><td colspan="12">${section.label}</td></tr>`;
+
+    for (const unit of units) {
+      if (section.id !== 'no-offer') rankCounter++;
+      html += renderRow(unit, rankCounter);
+    }
+  }
+
+  tbody.innerHTML = html;
+}
+
+renderTable();
+</script>
 </body>
 </html>
