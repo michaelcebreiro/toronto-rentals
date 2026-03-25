@@ -118,6 +118,16 @@
       color: inherit;
       opacity: 0.7;
     }
+    .pipeline-list {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 400;
+      text-align: left;
+      line-height: 1.5;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.9;
+    }
     /* Urgency levels */
     .tracker.urgency-crit {
       background: #FEE2E2;
@@ -563,19 +573,16 @@
     <div class="tracker-title">Offer pipeline</div>
     <div class="tracker-row">
       <div class="tracker-stat">
-        <div class="num" id="t-offers">-</div>
-        <div class="label">Units marked<br>for offer</div>
-      </div>
-      <div class="tracker-stat">
         <div class="num" id="t-apps">-</div>
         <div class="label">Applications<br>sent</div>
+        <div class="pipeline-list" id="t-apps-list"></div>
       </div>
       <div class="tracker-stat">
         <div class="num" id="t-sent">-</div>
         <div class="label">Offers<br>sent</div>
+        <div class="pipeline-list" id="t-sent-list"></div>
       </div>
     </div>
-    <div id="tracker-msg" style="margin-top: 10px; font-size: 12px; font-weight: 500; line-height: 1.5;"></div>
   </div>
 
   <div class="alert alert-green">
@@ -1165,69 +1172,55 @@ renderTable();
 // ─────────────────────────────────────────────
 //  OFFER PIPELINE TRACKER
 // ─────────────────────────────────────────────
-// Units where user has said "Offer" (active, non-lost only)
-const OFFER_UNITS = UNITS.filter(u =>
-  u.section === 'active' && !u.lost &&
-  u.status.text.startsWith('Offer')
-);
+// All active, non-lost units are eligible for the pipeline
+const OFFER_UNITS = UNITS.filter(u => u.section === 'active' && !u.lost);
 
 function updateTracker() {
-  const total = OFFER_UNITS.length;
   let apps = 0;
   let offers = 0;
+  const appsOnlyUnits = [];
+  const offersUnits = [];
 
   for (const u of OFFER_UNITS) {
-    const appKey  = trackKey(u, 'app');
+    const appKey   = trackKey(u, 'app');
     const offerKey = trackKey(u, 'offer');
-    if (firebaseReady) {
-      if (trackingState[appKey])   apps++;
-      if (trackingState[offerKey]) offers++;
-    } else {
-      if (localStorage.getItem('rental-track-' + appKey) === '1')   apps++;
-      if (localStorage.getItem('rental-track-' + offerKey) === '1') offers++;
-    }
+    const appDone   = firebaseReady ? !!trackingState[appKey]   : localStorage.getItem('rental-track-' + appKey) === '1';
+    const offerDone = firebaseReady ? !!trackingState[offerKey] : localStorage.getItem('rental-track-' + offerKey) === '1';
+    if (appDone) apps++;
+    if (offerDone) offers++;
+    if (appDone && !offerDone) appsOnlyUnits.push(u);
+    if (offerDone) offersUnits.push(u);
   }
 
-  document.getElementById('t-offers').textContent = total;
-  document.getElementById('t-apps').textContent    = apps + ' / ' + total;
-  document.getElementById('t-sent').textContent    = offers + ' / ' + total;
+  const unitName = u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')';
+
+  document.getElementById('t-apps').textContent = apps;
+  document.getElementById('t-sent').textContent = offers;
+
+  // Applications list
+  const appsListEl = document.getElementById('t-apps-list');
+  if (appsOnlyUnits.length) {
+    appsListEl.innerHTML = '<strong>Application sent but no offer yet:</strong> ' + appsOnlyUnits.map(unitName).join(', ');
+  } else {
+    appsListEl.textContent = '';
+  }
+
+  // Offers list
+  const sentListEl = document.getElementById('t-sent-list');
+  if (offersUnits.length) {
+    sentListEl.innerHTML = '<strong>Offers sent in for:</strong> ' + offersUnits.map(unitName).join(', ');
+  } else {
+    sentListEl.textContent = '';
+  }
 
   // Urgency based on apps sent ratio
   const tracker = document.getElementById('tracker');
+  const total = OFFER_UNITS.length;
   const ratio = total > 0 ? apps / total : 1;
   tracker.classList.remove('urgency-crit', 'urgency-warn', 'urgency-ok');
-  if (ratio <= 0.25)      tracker.classList.add('urgency-crit');
-  else if (ratio <= 0.6)  tracker.classList.add('urgency-warn');
-  else                    tracker.classList.add('urgency-ok');
-
-  // Build message
-  const msg = document.getElementById('tracker-msg');
-  const lines = [];
-  if (apps === 0 && total > 0) {
-    lines.push(`No applications sent for any of the ${total} units marked for offer. Kenan, get moving.`);
-  } else if (apps < total) {
-    const missing = OFFER_UNITS.filter(u => {
-      const k = trackKey(u, 'app');
-      return firebaseReady ? !trackingState[k] : localStorage.getItem('rental-track-' + k) !== '1';
-    });
-    const names = missing.map(u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')').join(', ');
-    lines.push(`Applications still needed for: ${names}`);
-  }
-  const noOffer = OFFER_UNITS.filter(u => {
-    const appK = trackKey(u, 'app');
-    const offK = trackKey(u, 'offer');
-    const appDone   = firebaseReady ? !!trackingState[appK]  : localStorage.getItem('rental-track-' + appK) === '1';
-    const offerDone = firebaseReady ? !!trackingState[offK] : localStorage.getItem('rental-track-' + offK) === '1';
-    return appDone && !offerDone;
-  });
-  if (noOffer.length) {
-    const names = noOffer.map(u => u.unit + ' (' + BUILDINGS[u.building].name.split(' (')[0] + ')').join(', ');
-    lines.push(`Application sent but no offer yet: ${names}`);
-  }
-  if (apps === total && offers === total) {
-    lines.push('All applications and offers sent. Now we wait.');
-  }
-  msg.innerHTML = lines.join('<br>');
+  if (ratio <= 0.25)     tracker.classList.add('urgency-crit');
+  else if (ratio <= 0.6) tracker.classList.add('urgency-warn');
+  else                   tracker.classList.add('urgency-ok');
 }
 
 updateTracker();
