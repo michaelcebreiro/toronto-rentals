@@ -293,7 +293,7 @@
         border-radius: 10px;
         margin-bottom: 10px;
         padding: 14px;
-        overflow: hidden;
+        overflow: visible;
       }
       tbody tr:not(.section-header) td {
         padding: 0;
@@ -351,6 +351,10 @@
       /* Notes — full width at bottom */
       tbody tr:not(.section-header) > td:nth-child(12) {
         min-width: unset;
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
         margin-top: 8px;
         padding-top: 10px;
         border-top: 1px solid #EEECEA !important;
