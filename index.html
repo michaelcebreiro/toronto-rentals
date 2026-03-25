@@ -223,6 +223,7 @@
 
     .unit     { font-weight: 600; font-size: 13px; }
     .building-name { font-size: 11px; color: #6B6A65; margin-top: 2px; }
+    .card-bldg-hint { display: none; }
     .price    { font-weight: 600; white-space: nowrap; }
     .type-cell { white-space: nowrap; }
     .notes    { font-size: 11.5px; color: #5F5E5A; min-width: 200px; line-height: 1.5; }
@@ -358,6 +359,69 @@
       }
 
       .notes { min-width: unset; }
+
+      /* ── Expand / collapse ── */
+      tbody tr:not(.section-header) {
+        cursor: pointer;
+        position: relative;
+        padding-right: 34px;
+      }
+      tbody tr:not(.section-header)::after {
+        content: '▾';
+        position: absolute;
+        top: 14px;
+        right: 12px;
+        font-size: 16px;
+        color: #9B9A95;
+        transition: transform 0.2s;
+        pointer-events: none;
+      }
+      tbody tr:not(.section-header).expanded::after {
+        transform: rotate(180deg);
+      }
+
+      /* Collapsed: hide detail cells */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(4),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(6),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(7),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(8),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(9),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(10),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(12) {
+        display: none;
+      }
+      /* Collapsed: hide the "Status" label above badge but keep badge */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(11)::before {
+        display: none;
+      }
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(11) {
+        margin-bottom: 0;
+        vertical-align: middle;
+      }
+      /* Collapsed: price + status inline, no bottom gap */
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(5) {
+        margin-bottom: 4px;
+      }
+
+      /* Building name hint shown only in collapsed state */
+      .card-bldg-hint {
+        display: block;
+        font-size: 10.5px;
+        color: #9B9A95;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: calc(100vw - 100px);
+      }
+      tbody tr.expanded .card-bldg-hint { display: none; }
+
+      /* Expanded: thin divider before the badge row */
+      tbody tr:not(.section-header).expanded > td:nth-child(7) {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #EEECEA;
+      }
     }
   </style>
 </head>
@@ -553,7 +617,7 @@ const UNITS = [
     parking: 'rentable', balconies: 1, sqft: null, floor: 31,
     viewed: 'possibly',
     status: { text: 'Offer', color: 'amber' },
-    notes: 'Very high floor. Same layout as 1010, 2710, 2210. Likely dark colour scheme like 2710. Glass door separates den from kitchen. West-facing unobstructed balcony.',
+    notes: 'Very high floor. Den off the kitchen behind a glass door - interior but feels open, gets borrowed light from the main living area. Preferred layout over 3103. West-facing unobstructed balcony.',
   },
   {
     section: 'active', lost: false,
@@ -563,7 +627,7 @@ const UNITS = [
     parking: 'rentable', balconies: 1, sqft: null, floor: 31,
     viewed: true,
     status: { text: 'Offer', color: 'amber' },
-    notes: 'Massive den on right as you enter - open but can be enclosed. Double-door bathroom accessible from kitchen and bedroom. Can make space work.',
+    notes: 'Den is a dark entry alcove on the right as you walk in - no natural light, no city view. Large and can be enclosed but not ideal for an office or music room. Double-door bathroom accessible from kitchen and bedroom.',
   },
 
   // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
@@ -857,7 +921,7 @@ function renderRow(unit, rank, isTop5) {
     <tr${rowCls ? ` class="${rowCls}"` : ''}>
       <td>${rankEl}</td>
       <td class="score"><span class="${sCls}">${sStr}</span></td>
-      <td><div class="unit"><a href="${unit.url}" target="_blank" rel="noopener">${unit.unit}</a></div></td>
+      <td><div class="unit"><a href="${unit.url}" target="_blank" rel="noopener">${unit.unit}</a></div><div class="card-bldg-hint">${b.name}</div></td>
       <td>
         <div class="building-name"><a href="${b.officialSite}" target="_blank" rel="noopener">${b.name}</a></div>
         <div class="building-links">
@@ -913,6 +977,20 @@ function renderTable() {
 }
 
 renderTable();
+
+// ─────────────────────────────────────────────
+//  MOBILE CARD EXPAND / COLLAPSE
+// ─────────────────────────────────────────────
+(function () {
+  const tbody = document.getElementById('units-body');
+  tbody.addEventListener('click', function (e) {
+    // Let link clicks navigate normally
+    if (e.target.closest('a')) return;
+    const row = e.target.closest('tr');
+    if (!row || row.classList.contains('section-header')) return;
+    row.classList.toggle('expanded');
+  });
+})();
 </script>
 </body>
 </html>
