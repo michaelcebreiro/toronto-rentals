@@ -4,6 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Toronto Rental Shortlist</title>
+
+  <!-- Firebase SDK (Realtime Database) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script>
+  // ─────────────────────────────────────────────
+  //  FIREBASE CONFIG — fill in after creating your project
+  //  https://console.firebase.google.com
+  // ─────────────────────────────────────────────
+  const FIREBASE_CONFIG = {
+    apiKey:            'AIzaSyC4aokCTJ-Yigy7bewh7wbnIfZ11ipRCYE',
+    authDomain:        'toronto-rentals-5f209.firebaseapp.com',
+    databaseURL:       'https://toronto-rentals-5f209-default-rtdb.firebaseio.com',
+    projectId:         'toronto-rentals-5f209',
+    storageBucket:     'toronto-rentals-5f209.firebasestorage.app',
+    messagingSenderId: '289578645317',
+    appId:             '1:289578645317:web:187ed427ef6e4e0b82f02c',
+  };
+
+  let dbRef = null;
+  let trackingState = {};   // in-memory mirror of shared state
+
+  const firebaseReady = FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL;
+  if (firebaseReady) {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    dbRef = firebase.database().ref('tracking');
+    // Listen for real-time changes from any user
+    dbRef.on('value', (snap) => {
+      trackingState = snap.val() || {};
+      syncCheckboxesToState();
+    });
+  }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -142,7 +175,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 12.5px;
-      min-width: 1100px;
+      min-width: 1280px;
     }
 
     th {
@@ -232,6 +265,18 @@
     .score-mid { color: #2F80ED; }
     .score-low { color: #D97706; }
     .score-na  { color: #9B9A95; font-weight: 400; font-size: 12px; }
+
+    /* Tracking checkboxes */
+    .track-cb {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #1D9E75;
+    }
+    .track-cb:disabled {
+      cursor: default;
+      opacity: 0.3;
+    }
 
     /* Legend */
     .legend {
@@ -335,7 +380,9 @@
       tbody tr:not(.section-header) > td:nth-child(8),
       tbody tr:not(.section-header) > td:nth-child(9),
       tbody tr:not(.section-header) > td:nth-child(10),
-      tbody tr:not(.section-header) > td:nth-child(11) {
+      tbody tr:not(.section-header) > td:nth-child(11),
+      tbody tr:not(.section-header) > td:nth-child(12),
+      tbody tr:not(.section-header) > td:nth-child(13) {
         display: inline-block;
         margin-right: 4px;
         margin-bottom: 6px;
@@ -347,9 +394,11 @@
       tbody tr:not(.section-header) > td:nth-child(9)::before { content: "Pool"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
       tbody tr:not(.section-header) > td:nth-child(10)::before { content: "Viewed"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
       tbody tr:not(.section-header) > td:nth-child(11)::before { content: "Status"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(12)::before { content: "App sent"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+      tbody tr:not(.section-header) > td:nth-child(13)::before { content: "Offer sent"; font-size: 10px; color: #9B9A95; display: block; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
 
       /* Notes — full width at bottom */
-      tbody tr:not(.section-header) > td:nth-child(12) {
+      tbody tr:not(.section-header) > td:nth-child(14) {
         min-width: unset;
         width: 100%;
         max-width: 100%;
@@ -392,7 +441,9 @@
       tbody tr:not(.section-header):not(.expanded) > td:nth-child(8),
       tbody tr:not(.section-header):not(.expanded) > td:nth-child(9),
       tbody tr:not(.section-header):not(.expanded) > td:nth-child(10),
-      tbody tr:not(.section-header):not(.expanded) > td:nth-child(12) {
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(12),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(13),
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(14) {
         display: none;
       }
       /* Collapsed: hide the "Status" label above badge but keep badge */
@@ -402,6 +453,10 @@
       tbody tr:not(.section-header):not(.expanded) > td:nth-child(11) {
         margin-bottom: 0;
         vertical-align: middle;
+      }
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(12)::before,
+      tbody tr:not(.section-header):not(.expanded) > td:nth-child(13)::before {
+        display: none;
       }
       /* Collapsed: price + status inline, no bottom gap */
       tbody tr:not(.section-header):not(.expanded) > td:nth-child(5) {
@@ -436,7 +491,7 @@
   <header>
     <h1>Toronto Rental Shortlist</h1>
     <p>All listings &middot; Priority order &middot; Top 5 for Single Key highlighted in green</p>
-    <p class="updated">Last updated: <span id="lastUpdated">24 March 2026</span></p>
+    <p class="updated">Last updated: <span id="lastUpdated">25 March 2026</span></p>
   </header>
 
   <div class="alert alert-green">
@@ -485,6 +540,8 @@
           <th>Pool</th>
           <th>Viewed</th>
           <th>Offer status</th>
+          <th>App sent</th>
+          <th>Offer sent</th>
           <th>Notes</th>
         </tr>
       </thead>
@@ -631,8 +688,8 @@ const UNITS = [
     price: 2100, beds: '1+den', baths: 1, facing: 'NW',
     parking: 'rentable', balconies: 1, sqft: null, floor: 31,
     viewed: true,
-    status: { text: 'Offer', color: 'amber' },
-    notes: 'Den is a dark entry alcove on the right as you walk in - no natural light, no city view. Large and can be enclosed but not ideal for an office or music room. Double-door bathroom accessible from kitchen and bedroom.',
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'Den is a dark entry alcove on the right as you walk in - no natural light, no city view. Large and can be enclosed but not ideal for an office or music room. Double-door bathroom accessible from kitchen and bedroom. Alcove den layout is a concern.',
   },
 
   // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
@@ -683,8 +740,8 @@ const UNITS = [
     price: 2575, beds: '1+den', baths: 2, facing: 'W',
     parking: 'rentable', balconies: 1, sqft: 550, floor: 24,
     viewed: false,
-    status: { text: 'Offer', color: 'amber' },
-    notes: 'Listed as 2 bed but den has glass walls - same layout as the other 1+den units. Den is ~49 sqft (7\'4" x 6\'8"), enclosed with glass. Parking rentable separately.',
+    status: { text: 'Considering', color: 'gray' },
+    notes: 'Listed as 2 bed but den has glass walls - same layout as the other 1+den units. Den is ~49 sqft (7\'4" x 6\'8"), enclosed with glass. Parking rentable separately. Price makes it hard to justify over other 1+den units with similar or better spec.',
   },
   {
     section: 'active', lost: false,
@@ -906,6 +963,44 @@ const SECTIONS = [
   { id: 'no-offer',  label: 'Viewed - no offer' },
 ];
 
+// ─────────────────────────────────────────────
+//  TRACKING CHECKBOXES (Firebase → localStorage fallback)
+// ─────────────────────────────────────────────
+function trackKey(unit, type) {
+  // Safe key: Firebase paths can't contain . $ # [ ] /
+  return `${unit.building}_${unit.unit}_${type}`.replace(/[\s.$/\[\]#]/g, '_');
+}
+
+function isTracked(unit, type) {
+  const key = trackKey(unit, type);
+  if (firebaseReady) return !!trackingState[key];
+  return localStorage.getItem('rental-track-' + key) === '1';
+}
+
+function setTracked(key, checked) {
+  if (firebaseReady) {
+    dbRef.child(key).set(checked ? true : null);
+  } else {
+    if (checked) localStorage.setItem('rental-track-' + key, '1');
+    else localStorage.removeItem('rental-track-' + key);
+  }
+}
+
+function syncCheckboxesToState() {
+  document.querySelectorAll('.track-cb').forEach(cb => {
+    if (cb.disabled) return;
+    cb.checked = !!trackingState[cb.dataset.key];
+  });
+}
+
+function trackCheckbox(unit, type) {
+  const disabled = unit.lost || unit.section === 'no-offer';
+  const checked  = !disabled && isTracked(unit, type) ? 'checked' : '';
+  const disAttr  = disabled ? 'disabled' : '';
+  const key      = trackKey(unit, type);
+  return `<input type="checkbox" class="track-cb" data-key="${key}" ${checked} ${disAttr}>`;
+}
+
 function renderRow(unit, rank, isTop5) {
   const b        = BUILDINGS[unit.building];
   const s        = calcScore(unit);
@@ -939,6 +1034,8 @@ function renderRow(unit, rank, isTop5) {
       <td>${poolBadge(b.pool)}</td>
       <td>${viewedBadge(unit.viewed)}</td>
       <td>${badge(unit.status.text, unit.status.color)}</td>
+      <td class="track-cell">${trackCheckbox(unit, 'app')}</td>
+      <td class="track-cell">${trackCheckbox(unit, 'offer')}</td>
       <td class="notes">${unit.notes}</td>
     </tr>`;
 }
@@ -963,7 +1060,7 @@ function renderTable() {
       return sb - sa;
     });
 
-    html += `<tr class="section-header"><td colspan="12">${section.label}</td></tr>`;
+    html += `<tr class="section-header"><td colspan="14">${section.label}</td></tr>`;
 
     for (const unit of units) {
       if (section.id !== 'no-offer') rankCounter++;
@@ -987,11 +1084,17 @@ renderTable();
 (function () {
   const tbody = document.getElementById('units-body');
   tbody.addEventListener('click', function (e) {
-    // Let link clicks navigate normally
-    if (e.target.closest('a')) return;
+    // Let link clicks and checkboxes work normally
+    if (e.target.closest('a') || e.target.classList.contains('track-cb')) return;
     const row = e.target.closest('tr');
     if (!row || row.classList.contains('section-header')) return;
     row.classList.toggle('expanded');
+  });
+
+  // Persist checkbox state (Firebase if configured, otherwise localStorage)
+  tbody.addEventListener('change', function (e) {
+    if (!e.target.classList.contains('track-cb')) return;
+    setTracked(e.target.dataset.key, e.target.checked);
   });
 })();
 </script>
