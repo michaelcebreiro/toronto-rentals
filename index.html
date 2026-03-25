@@ -4,6 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Toronto Rental Shortlist</title>
+
+  <!-- Firebase SDK (Realtime Database) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script>
+  // ─────────────────────────────────────────────
+  //  FIREBASE CONFIG — fill in after creating your project
+  //  https://console.firebase.google.com
+  // ─────────────────────────────────────────────
+  const FIREBASE_CONFIG = {
+    apiKey:            '',   // e.g. 'AIzaSyB...'
+    authDomain:        '',   // e.g. 'my-project.firebaseapp.com'
+    databaseURL:       '',   // e.g. 'https://my-project-default-rtdb.firebaseio.com'
+    projectId:         '',   // e.g. 'my-project'
+  };
+
+  let dbRef = null;
+  let trackingState = {};   // in-memory mirror of shared state
+
+  const firebaseReady = FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL;
+  if (firebaseReady) {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    dbRef = firebase.database().ref('tracking');
+    // Listen for real-time changes from any user
+    dbRef.on('value', (snap) => {
+      trackingState = snap.val() || {};
+      syncCheckboxesToState();
+    });
+  }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -931,14 +961,33 @@ const SECTIONS = [
 ];
 
 // ─────────────────────────────────────────────
-//  TRACKING CHECKBOXES (localStorage)
+//  TRACKING CHECKBOXES (Firebase → localStorage fallback)
 // ─────────────────────────────────────────────
 function trackKey(unit, type) {
-  return `rental-track-${unit.building}-${unit.unit}-${type}`;
+  // Safe key: Firebase paths can't contain . $ # [ ] /
+  return `${unit.building}_${unit.unit}_${type}`.replace(/[\s.$/\[\]#]/g, '_');
 }
 
 function isTracked(unit, type) {
-  return localStorage.getItem(trackKey(unit, type)) === '1';
+  const key = trackKey(unit, type);
+  if (firebaseReady) return !!trackingState[key];
+  return localStorage.getItem('rental-track-' + key) === '1';
+}
+
+function setTracked(key, checked) {
+  if (firebaseReady) {
+    dbRef.child(key).set(checked ? true : null);
+  } else {
+    if (checked) localStorage.setItem('rental-track-' + key, '1');
+    else localStorage.removeItem('rental-track-' + key);
+  }
+}
+
+function syncCheckboxesToState() {
+  document.querySelectorAll('.track-cb').forEach(cb => {
+    if (cb.disabled) return;
+    cb.checked = !!trackingState[cb.dataset.key];
+  });
 }
 
 function trackCheckbox(unit, type) {
@@ -1039,15 +1088,10 @@ renderTable();
     row.classList.toggle('expanded');
   });
 
-  // Persist checkbox state to localStorage
+  // Persist checkbox state (Firebase if configured, otherwise localStorage)
   tbody.addEventListener('change', function (e) {
     if (!e.target.classList.contains('track-cb')) return;
-    const key = e.target.dataset.key;
-    if (e.target.checked) {
-      localStorage.setItem(key, '1');
-    } else {
-      localStorage.removeItem(key);
-    }
+    setTracked(e.target.dataset.key, e.target.checked);
   });
 })();
 </script>
