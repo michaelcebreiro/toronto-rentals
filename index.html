@@ -1152,6 +1152,33 @@ function unitUid(unit) {
 }
 
 // Sync all pipeline step UI states for a given unit uid
+const PIPELINE_STATUS = {
+  offer:      { text: 'Offer sent',           color: 'green' },
+  app:        { text: 'Application sent',     color: 'amber' },
+  interested: { text: 'Awaiting application', color: 'blue'  },
+  none:       { text: 'Considering',          color: 'gray'  },
+};
+
+function pipelineStatus(unit) {
+  if (unit.lost || unit.section === 'no-offer') return unit.status;
+  const offrDone = isTracked(unit, 'offer');
+  const appDone  = isTracked(unit, 'app') || offrDone;
+  const intDone  = isTracked(unit, 'interested') || appDone;
+  if (offrDone) return PIPELINE_STATUS.offer;
+  if (appDone)  return PIPELINE_STATUS.app;
+  if (intDone)  return PIPELINE_STATUS.interested;
+  return PIPELINE_STATUS.none;
+}
+
+function syncStatusBadge(uid) {
+  const cell = document.querySelector(`[data-status-uid="${uid}"]`);
+  if (!cell) return;
+  const unit = UNIT_BY_UID[uid];
+  if (!unit) return;
+  const s = pipelineStatus(unit);
+  cell.innerHTML = badge(s.text, s.color);
+}
+
 function syncStepStates(uid) {
   const container = document.querySelector(`.pipeline-steps[data-uid="${uid}"]`);
   if (!container) return;
@@ -1174,6 +1201,7 @@ function syncStepStates(uid) {
   setStep('interested', true,    intDone);
   setStep('app',        intDone, appDone);
   setStep('offer',      appDone, offrDone);
+  syncStatusBadge(uid);
 }
 
 function syncCheckboxesToState() {
@@ -1236,7 +1264,7 @@ function renderRow(unit, rank, isTop5) {
       <td>${gymBadge(b.gym)}</td>
       <td>${poolBadge(b.pool)}</td>
       <td>${viewedBadge(unit.viewed)}</td>
-      <td>${badge(unit.status.text, unit.status.color)}</td>
+      <td data-status-uid="${unitUid(unit)}">${(() => { const s = pipelineStatus(unit); return badge(s.text, s.color); })()}</td>
       <td class="track-cell">${trackSteps(unit)}</td>
       <td class="notes">${unit.notes}</td>
     </tr>`;
