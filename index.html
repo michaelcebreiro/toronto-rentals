@@ -426,7 +426,7 @@
   <div class="legend">
     <div class="leg-item">
       <div class="leg-swatch" style="background:#E1F5EE; border-left: 3px solid #1D9E75;"></div>
-      Top 5 - Single Key priority
+      Top 5 by score
     </div>
     <div class="leg-item">
       <div class="leg-swatch" style="background:#F1EFE8; opacity:0.5;"></div>
@@ -516,7 +516,7 @@ const UNITS = [
 
   // ── TOP 5 ─────────────────────────────────────────────────────────────────
   {
-    section: 'top5', lost: false,
+    section: 'active', lost: false,
     unit: '1805', building: '120B',
     url: 'https://strata.ca/toronto/120-broadway-ave/unit-1805',
     price: 2850, beds: 2, baths: 2, facing: 'SE',
@@ -526,7 +526,7 @@ const UNITS = [
     notes: 'Two balconies, SE-facing, lots of light. Parking + locker included. Higher floor than 1105.',
   },
   {
-    section: 'top5', lost: false,
+    section: 'active', lost: false,
     unit: '2710 S', building: '110B',
     url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2710',
     price: 2249, beds: '1+den', baths: 2, facing: 'E',
@@ -536,7 +536,7 @@ const UNITS = [
     notes: 'Same layout as 1010, dark colour scheme. Floor 27. Happy to offer blind.',
   },
   {
-    section: 'top5', lost: false,
+    section: 'active', lost: false,
     unit: '2210', building: '110B',
     url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-2210',
     price: 2200, beds: '1+den', baths: 2, facing: 'E',
@@ -546,7 +546,7 @@ const UNITS = [
     notes: 'Same layout as 1010. Colour scheme unknown - if light, better than 2710 S (same spec, cheaper). Landlord went silent on Kenan - looking unlikely unless SingleKey screening changes his mind.',
   },
   {
-    section: 'top5', lost: false,
+    section: 'active', lost: false,
     unit: '3111', building: '110B',
     url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3111',
     price: 2100, beds: '1+den', baths: 1, facing: 'W',
@@ -556,7 +556,7 @@ const UNITS = [
     notes: 'Very high floor. Same layout as 1010, 2710, 2210. Likely dark colour scheme like 2710. Glass door separates den from kitchen. West-facing unobstructed balcony.',
   },
   {
-    section: 'top5', lost: false,
+    section: 'active', lost: false,
     unit: '3103', building: '110B',
     url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-3103',
     price: 2100, beds: '1+den', baths: 1, facing: 'NW',
@@ -568,7 +568,7 @@ const UNITS = [
 
   // ── UNDER CONSIDERATION ───────────────────────────────────────────────────
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '1105', building: '120B',
     url: 'https://strata.ca/toronto/120-broadway-ave/unit-1105',
     price: 2950, beds: 2, baths: 2, facing: 'SE',
@@ -578,7 +578,7 @@ const UNITS = [
     notes: 'Large 817 sqft with two balconies. Big windows. Parking + locker included. Ideally want 1-bed + den first.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '1912', building: '110B',
     url: 'https://strata.ca/toronto/110-broadway-avenue-untitled-north-tower/unit-1912',
     price: 2950, beds: 2, baths: 2, facing: 'SE',
@@ -588,7 +588,7 @@ const UNITS = [
     notes: 'Corner suite, 600 sqft, two balconies, SE facing. Parking included. Expensive relative to spec.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '2211', building: 'L5-117',
     url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/unit-2211',
     price: 3000, beds: 2, baths: 2, facing: 'SE',
@@ -598,7 +598,7 @@ const UNITS = [
     notes: '741 sqft corner suite. SE facing, large balcony. At upper price limit. Note: outdoor pool only, no indoor.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '810N', building: 'L5-117',
     url: 'https://strata.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/mls/c12811576',
     price: 2850, beds: 2, baths: 2, facing: 'SE',
@@ -608,7 +608,7 @@ const UNITS = [
     notes: '756 sqft. SE corner, same building as 2211 but cheaper and lower floor. No indoor pool.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '2414', building: '120B',
     url: 'https://strata.ca/toronto/120-broadway-ave/unit-2414',
     price: 2575, beds: 2, baths: 2, facing: 'W',
@@ -618,7 +618,7 @@ const UNITS = [
     notes: 'Good price for 2 bed. Corner den may serve as second room per listing. No parking.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '706', building: 'L5-117',
     url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-706',
     price: 2499, beds: 2, baths: 2, facing: 'E',
@@ -628,7 +628,7 @@ const UNITS = [
     notes: 'E-facing, 700-799 sqft, locker included. 172 days on market - landlord likely motivated to deal. Sauna confirmed. Low floor.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '1505', building: 'L5-127',
     url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1505',
     price: 2350, beds: 2, baths: 2, facing: 'NE',
@@ -638,7 +638,7 @@ const UNITS = [
     notes: 'NE-facing, 600-699 sqft. No parking. Second bedroom is den-like per listing. $2,350.',
   },
   {
-    section: 'consideration', lost: false,
+    section: 'active', lost: false,
     unit: '2309', building: 'L5-127',
     url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2309',
     price: 2650, beds: 2, baths: 2, facing: 'NE',
@@ -648,7 +648,7 @@ const UNITS = [
     notes: 'NE-facing, 600-699 sqft. No parking. Most expensive of the Line 5 batch at $2,650.',
   },
   {
-    section: 'consideration', lost: true,
+    section: 'active', lost: true,
     unit: '1707', building: 'L5-127',
     url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-1707',
     price: 2400, beds: 2, baths: 2, facing: 'N',
@@ -658,7 +658,7 @@ const UNITS = [
     notes: 'N-facing. Details MLS-restricted. No parking confirmed. $2,400.',
   },
   {
-    section: 'consideration', lost: true,
+    section: 'active', lost: true,
     unit: '2811', building: 'L5-127',
     url: 'https://condoexchange.ca/toronto/117-and-127-broadway-avenue-line-5-the-south-tower/2-unit-2811',
     price: 2200, beds: 1, baths: 1, facing: 'NE',
@@ -833,22 +833,20 @@ function bedsLabel(b) {
 //  RENDER
 // ─────────────────────────────────────────────
 const SECTIONS = [
-  { id: 'lost',          label: 'Lost' },
-  { id: 'top5',          label: 'Top 5 - Single Key priority' },
-  { id: 'consideration', label: 'Under consideration' },
-  { id: 'fallbacks',     label: 'Fallbacks' },
-  { id: 'no-offer',      label: 'Viewed - no offer' },
+  { id: 'lost',      label: 'Lost' },
+  { id: 'active',    label: 'Shortlist' },
+  { id: 'fallbacks', label: 'Fallbacks' },
+  { id: 'no-offer',  label: 'Viewed - no offer' },
 ];
 
-function renderRow(unit, rank) {
-  const b       = BUILDINGS[unit.building];
-  const s       = calcScore(unit);
-  const sCls    = scoreClass(s);
-  const sStr    = fmtScore(s);
-  const isTop5  = unit.section === 'top5';
-  const isNO    = unit.section === 'no-offer';
-  const rowCls  = isTop5 ? 'top5' : (unit.lost ? 'lost' : (isNO ? 'no-offer' : ''));
-  const rankEl  = isNO
+function renderRow(unit, rank, isTop5) {
+  const b        = BUILDINGS[unit.building];
+  const s        = calcScore(unit);
+  const sCls     = scoreClass(s);
+  const sStr     = fmtScore(s);
+  const isNO     = unit.section === 'no-offer';
+  const rowCls   = isTop5 ? 'top5' : (unit.lost ? 'lost' : (isNO ? 'no-offer' : ''));
+  const rankEl   = isNO
     ? '<span class="rank">-</span>'
     : `<span class="rank${isTop5 ? ' active' : ''}">${rank}</span>`;
   const facingEl = unit.facing
@@ -882,6 +880,9 @@ function renderTable() {
   const tbody = document.getElementById('units-body');
   let html = '';
   let rankCounter = 0;
+  // Track how many non-lost units have appeared in the active section
+  // to automatically highlight the top 5 by score
+  let activeNonLostCount = 0;
 
   for (const section of SECTIONS) {
     const units = UNITS.filter(u => u.section === section.id);
@@ -899,7 +900,12 @@ function renderTable() {
 
     for (const unit of units) {
       if (section.id !== 'no-offer') rankCounter++;
-      html += renderRow(unit, rankCounter);
+      let isTop5 = false;
+      if (section.id === 'active' && !unit.lost) {
+        activeNonLostCount++;
+        isTop5 = activeNonLostCount <= 5;
+      }
+      html += renderRow(unit, rankCounter, isTop5);
     }
   }
 
